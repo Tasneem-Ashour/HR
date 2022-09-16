@@ -113,7 +113,7 @@ public class EmployeeService {
         Employee manager = employeeRepository.findById(employeeEditCommand.getMangerId()).get();
         employee.setMangerId(manager);
         employeeRepository.save(employee);
-        var x = 10;
+
 
     }
 }
