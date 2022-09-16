@@ -1,11 +1,10 @@
 package com.project.HR.DTO;
 
-import com.project.HR.Entity.Expertise;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 
 import java.sql.Date;
 import java.time.Year;
-import java.util.List;
 
 @Data
 @Builder
@@ -13,21 +12,16 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class EmployeeDto {
+public class EmployeeTeamDto {
 
+    private Integer Id;
     private String FirstName;
     private String LastName;
     private String Gender;
     private Year Graduation;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     private Date DOB;
-    private double Salary;
-//    private Department department;
-    private List<Expertise> expertise;
-    private Integer TeamId;
-    private ManagerDto MangerId;
+    private Double Salary;
 
 
-    public EmployeeDto(String massage, boolean b) {
-
-    }
 }

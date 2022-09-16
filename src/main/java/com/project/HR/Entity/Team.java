@@ -21,7 +21,8 @@ public class Team {
     private Integer Id;
 
     private  String Name;
-
-    @OneToMany(mappedBy = "team")
+//    @JsonManagedReference
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "Team_Id")
     private List<Employee> employees = new ArrayList<>();
 }
