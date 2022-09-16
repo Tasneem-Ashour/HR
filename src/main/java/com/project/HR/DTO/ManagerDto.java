@@ -20,7 +20,7 @@ public class ManagerDto {
     private Year Graduation;
     private Date DOB;
     private double Salary;
-    //    private Department department;
+//        private Department department;
     private List<Expertise> expertise;
     private Integer TeamId;
 }

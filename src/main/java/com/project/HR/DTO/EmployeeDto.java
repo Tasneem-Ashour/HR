@@ -1,5 +1,6 @@
 package com.project.HR.DTO;
 
+import com.project.HR.Entity.Department;
 import com.project.HR.Entity.Expertise;
 import lombok.*;
 
@@ -21,13 +22,11 @@ public class EmployeeDto {
     private Year Graduation;
     private Date DOB;
     private double Salary;
-//    private Department department;
+    private Department department;
     private List<Expertise> expertise;
     private Integer TeamId;
     private ManagerDto MangerId;
 
 
-    public EmployeeDto(String massage, boolean b) {
 
-    }
 }

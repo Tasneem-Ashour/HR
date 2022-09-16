@@ -72,7 +72,7 @@ public class EmployeeControllerTest {
 
                 .builder()
 
-                .FirstName("Manger").LastName("Manger").employeesManger(new ArrayList<>())
+                .FirstName("Manger").LastName("Manger").employees(new ArrayList<>())
 
                 .build();
 
@@ -81,7 +81,7 @@ public class EmployeeControllerTest {
                 .FirstName("emp").LastName("emp").build();
 
 
-        manger.getEmployeesManger().add(employee);
+        manger.getEmployees().add(employee);
 
 
         employee.setMangerId(manger);
@@ -98,7 +98,7 @@ public class EmployeeControllerTest {
         Assertions.assertNull(dbManger.getDepartment());
 
 
-        Assertions.assertTrue(dbManger.getEmployeesManger().size() > 0);
+        Assertions.assertTrue(dbManger.getEmployees().size() > 0);
     }
 
     @Test

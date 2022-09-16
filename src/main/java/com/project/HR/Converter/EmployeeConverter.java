@@ -2,6 +2,7 @@ package com.project.HR.Converter;
 
 import com.project.HR.Command.EmployeeCommand;
 import com.project.HR.Command.EmployeeEditCommand;
+import com.project.HR.DTO.BasicEmployeeDto;
 import com.project.HR.DTO.EmployeeDto;
 import com.project.HR.DTO.EmployeeTeamDto;
 import com.project.HR.DTO.ManagerDto;
@@ -34,7 +35,6 @@ public class EmployeeConverter {
     public EmployeeDto covertEntityToDTO(Employee employee) {
         ModelMapper mapper = new ModelMapper();
         mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.LOOSE);
-//        mapper.typeMap(Employee.class, EmployeeDto.class).addMappings(m->m.map(s -> s.getMangerId(), EmployeeDto::setMangerId));
         EmployeeDto employeeDto = mapper.map(employee, EmployeeDto.class);
         return employeeDto;
     }
@@ -57,6 +57,12 @@ public class EmployeeConverter {
         mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
          mapper.map(s, d);
 
+    }
+    public BasicEmployeeDto covertEntityBasicEmployeeToDTO(Employee employee) {
+        ModelMapper mapper = new ModelMapper();
+        mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.LOOSE);
+        BasicEmployeeDto basicEmployeeDto = mapper.map(employee, BasicEmployeeDto.class);
+        return basicEmployeeDto;
     }
 
 

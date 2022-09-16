@@ -2,6 +2,7 @@ package com.project.HR.Controller;
 
 import com.project.HR.Command.EmployeeCommand;
 import com.project.HR.Command.EmployeeEditCommand;
+import com.project.HR.DTO.BasicEmployeeDto;
 import com.project.HR.DTO.EmployeeDto;
 import com.project.HR.DTO.EmployeeTeamDto;
 import com.project.HR.DTO.SalaryDto;
@@ -72,6 +73,11 @@ public class EmployeeController {
     public void editEmployee(@RequestBody EmployeeEditCommand employeeEditCommand ){
 
         employeeService.editeEmployeeInfo(employeeEditCommand);
+    }
+
+    @GetMapping(path = "/employeesUnderManager/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<BasicEmployeeDto> employeesUnderManager(@PathVariable int id ){
+      return   employeeService.getSubEmloyeesRec(id);
     }
 
 

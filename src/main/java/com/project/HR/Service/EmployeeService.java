@@ -3,6 +3,7 @@ package com.project.HR.Service;
 import com.project.HR.Command.EmployeeCommand;
 import com.project.HR.Command.EmployeeEditCommand;
 import com.project.HR.Converter.EmployeeConverter;
+import com.project.HR.DTO.BasicEmployeeDto;
 import com.project.HR.DTO.EmployeeDto;
 import com.project.HR.DTO.EmployeeTeamDto;
 import com.project.HR.DTO.SalaryDto;
@@ -43,8 +44,7 @@ public class EmployeeService {
 
 
     public EmployeeDto addEmployee(EmployeeCommand employeeCommand) throws Exception {
-        if(employeeCommand.getMangerId() == null
-                && employeeRepository.getTopEmployee() != null ){
+        if (employeeCommand.getMangerId() == null && employeeRepository.getTopEmployee() != null) {
             return null;
 
         }
@@ -86,11 +86,14 @@ public class EmployeeService {
     public String deleteEmployee(int id) {
         Employee employee = employeeRepository.findById(id).get();
         Employee manager = employee.getMangerId();
-        int managerId = manager.getId();
-        //Todo get manager of manager and update employee with new manager
-        //todo check if employee has no manage , can delete it
+        if (manager == null) {
+            return "Can not delete employee";
+        }
+        var subEmployees = employeeRepository.getEmployeesByManagerId(id);
+        subEmployees.forEach(e -> e.setMangerId(manager));
+        employeeRepository.saveAll(subEmployees);
         employeeRepository.deleteById(id);
-        return String.format("employee $ delete successfully", id);
+        return String.format("employee %s delete successfully", id);
     }
 
     public List<EmployeeTeamDto> getEmployeesInTeam(int id) {
@@ -125,4 +128,26 @@ public class EmployeeService {
 
 
     }
+
+    public List<BasicEmployeeDto> getSubEmloyeesRec(int managerId) {
+        List<Employee> employees = new ArrayList<Employee>();
+        Employee manager = employeeRepository.findById(managerId).get();
+        fillSubEmployees(manager, employees);
+        List<BasicEmployeeDto> listDto = new ArrayList<>();
+        employees.forEach(e-> listDto.add(employeeConverter.covertEntityBasicEmployeeToDTO(e)));
+        return listDto;
+    }
+
+    public void fillSubEmployees(Employee manager, List<Employee> employees) {
+
+        //Base Case
+        if (manager.getEmployees() == null || manager.getEmployees().size() == 0) return;
+
+        //Core Logic
+        employees.addAll(manager.getEmployees());
+
+        //Works as magic
+        manager.getEmployees().forEach(employee -> fillSubEmployees(employee, employees));
+    }
+
 }

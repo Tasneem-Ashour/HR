@@ -41,7 +41,7 @@ public class Employee {
     @JoinColumn(name = "Manger_Id")
     private Employee MangerId;
     @OneToMany(mappedBy = "MangerId")
-    private List<Employee> employeesManger = new ArrayList<>();
+    private List<Employee> employees = new ArrayList<>();
 
 
 }
