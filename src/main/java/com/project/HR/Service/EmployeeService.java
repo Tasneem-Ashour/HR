@@ -150,4 +150,10 @@ public class EmployeeService {
         manager.getEmployees().forEach(employee -> fillSubEmployees(employee, employees));
     }
 
+    public List<BasicEmployeeDto> getSubEmployees(int managerId) {
+        Employee manager = employeeRepository.findById(managerId).get();
+        List<BasicEmployeeDto> listDto = new ArrayList<>();
+        manager.getEmployees().forEach(e-> listDto.add(employeeConverter.covertEntityBasicEmployeeToDTO(e)));
+        return listDto;
+    }
 }

@@ -81,7 +81,10 @@ public class EmployeeController {
     }
 
 
-
+    @GetMapping(path = "/manager/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<BasicEmployeeDto> employeesUnderDirectlyManager(@PathVariable int id ){
+        return   employeeService.getSubEmployees(id);
+    }
 
 
 }
