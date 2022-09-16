@@ -40,14 +40,17 @@ public class EmployeeController {
 
     @PostMapping(path = "/add", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<EmployeeDto> createEmployee(@RequestBody EmployeeCommand employee) throws Exception {
-        return ResponseEntity.ok(employeeService.addEmployee(employee));
+      var output=employeeService.addEmployee(employee);
+      if(output==null){
+          return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+      }
+        return ResponseEntity.ok(output);
     }
 
     @DeleteMapping(path = "/delete/{id}" , produces = MediaType.APPLICATION_JSON_VALUE)
     public  String deleteEmployee(@PathVariable int id ){
         try {
             return employeeService.deleteEmployee( id );
-
         }
         catch (Exception exception){  throw new ResponseStatusException(
                 HttpStatus.NOT_FOUND, "Id Not Found",exception);

@@ -36,8 +36,11 @@ public class GetEntityFromFiled {
     }
 
 
-    public Employee getListFromMangerId (EmployeeCommand employeeCommand){
+    public Employee getManager(EmployeeCommand employeeCommand){
         Integer manger_Id = employeeCommand.getMangerId();
+        if(employeeRepository.findById(manger_Id).isEmpty()){
+            return  null;
+        }
         Employee employee = employeeRepository.findById(manger_Id).get();
         return  employee;
     }

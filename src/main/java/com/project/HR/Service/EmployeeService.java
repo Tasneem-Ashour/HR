@@ -43,7 +43,11 @@ public class EmployeeService {
 
 
     public EmployeeDto addEmployee(EmployeeCommand employeeCommand) throws Exception {
+        if(employeeCommand.getMangerId() == null
+                && employeeRepository.getTopEmployee() != null ){
+            return null;
 
+        }
         Employee employee = employeeConverter.convertCommandToEntity(employeeCommand);
 
         Department department = getEntityFromFiled.getDepartmentFromDeptId(employeeCommand);
@@ -53,8 +57,13 @@ public class EmployeeService {
 
         employee.setTeam(team);
 
-        Employee manger = getEntityFromFiled.getListFromMangerId(employeeCommand);
+        Employee manger = getEntityFromFiled.getManager(employeeCommand);
+        if (manger == null && employeeCommand.getMangerId() != null) {
+            return null;
+        }
+
         employee.setMangerId(manger);
+
 
         employee.setExpertise(employeeCommand.getExpertise());
 
