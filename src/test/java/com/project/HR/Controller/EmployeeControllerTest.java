@@ -2,11 +2,13 @@ package com.project.HR.Controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project.HR.Command.EmployeeCommand;
+import com.project.HR.Command.EmployeeEditCommand;
 import com.project.HR.Entity.Department;
 import com.project.HR.Entity.Employee;
 import com.project.HR.Entity.Expertise;
 import com.project.HR.Entity.Team;
 import com.project.HR.Repostory.EmployeeRepository;
+import com.project.HR.Service.EmployeeService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +43,8 @@ public class EmployeeControllerTest {
 
     @Autowired
     EmployeeRepository employeeRepository;
+    @Autowired
+    EmployeeService employeeService;
 
     @Test
     public void addEmployee_thenReturnStates200() throws Exception {
@@ -113,8 +117,7 @@ public class EmployeeControllerTest {
                 .andExpect(jsonPath("$.lastName", is("essam")))
 
                 .andExpect(jsonPath("$.salary", is(20000.0))).andExpect(jsonPath("$.dob").value("1996-06-01")).andExpect(jsonPath("$.graduation", is("2019")))
-//                .andExpect(jsonPath("$.mangerId",is()))
-//                .andExpect(jsonPath("$.departmentId",is(1)))
+
                 .andExpect(jsonPath("$.teamId", is(1))).andExpect(jsonPath("$.expertise", empty()));
 
 
@@ -194,7 +197,45 @@ public class EmployeeControllerTest {
     }
 
 
+@Test
+public void UpdateEmployee_thenReturnStates200() throws Exception {
+    Department department = Department.builder().Name("dept1")
 
+            .build();
+
+    Team team = Team.builder().Name("Team1").build();
+
+    Employee manger = Employee.builder()
+
+            .FirstName("manger").LastName("Manger").build();
+
+    EmployeeEditCommand updateEmployee = EmployeeEditCommand.builder()
+            .Id(100)
+            .FirstName("tasneem")
+            .LastName("ashour")
+            .expertise(new ArrayList<>())
+            .Salary(30000.0)
+            .departmentId(1)
+            .teamId(1)
+            .expertise(new ArrayList<>())
+            .MangerId(1)
+            .build();
+
+
+    String expertise = "java";
+    updateEmployee.getExpertise().add(expertise);
+
+
+    this.mockMvc.perform(put("/Employee/")
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON)
+            .content(objectMapper.writeValueAsString(updateEmployee)))
+            .andExpect(status().isNoContent());
+
+
+
+
+}
     @Test
     public void getAllEmployeeUnderManagerRec_ShouldReturnStatus200() throws Exception {
         mockMvc.perform(get("/Employee/employeesUnderManager/73")
