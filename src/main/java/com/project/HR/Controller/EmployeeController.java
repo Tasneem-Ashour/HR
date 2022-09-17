@@ -60,12 +60,25 @@ public class EmployeeController {
 
     @GetMapping(path = "/team/{id}" , produces = MediaType.APPLICATION_JSON_VALUE)
     public List<EmployeeTeamDto> getAllEmployeesInTeam(@PathVariable int id ){
-        return employeeService.getEmployeesInTeam(id);
+        try {
+            return employeeService.getEmployeesInTeam(id);
+
+        }
+        catch (Exception exception){  throw new ResponseStatusException(
+                HttpStatus.NOT_FOUND, "Id Not Found",exception);
+        }
     }
 
     @GetMapping(path = "/salary/{id}" ,produces = MediaType.APPLICATION_JSON_VALUE)
     public SalaryDto getSalaryInfo(@PathVariable int id){
-        return employeeService.getSalary(id);
+        try {
+            return employeeService.getSalary(id);
+
+        }
+        catch (Exception exception){  throw new ResponseStatusException(
+                HttpStatus.NOT_FOUND, "Id Not Found",exception);
+        }
+
     }
 
     @PutMapping(path = "/" ,produces = MediaType.APPLICATION_JSON_VALUE)

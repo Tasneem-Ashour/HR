@@ -169,10 +169,32 @@ public class EmployeeControllerTest {
                 ).andExpect(status().isOk());
 
   }
-  //مفيش تيم
-    // مفيش حد في التيم
+@Test
+    public void GetEmployeesInTeamEmpty_ShouldReturn404() throws Exception {
+        mockMvc.perform(get("/Employee/team/1000")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+        ).andExpect(status().isNotFound());
+    }
 
-    public void GetEmployeesInTeamEmpty_ShouldReturn404(){}
+  @Test
+    public void checkEmployeeHasSalaryNetAndGross_shouldBeReturnStatus200() throws Exception {
+      mockMvc.perform(get("/Employee/salary/150")
+              .contentType(MediaType.APPLICATION_JSON)
+              .accept(MediaType.APPLICATION_JSON)
+      ).andExpect(status().isOk());
+  }
+
+    @Test
+    public void checkEmployeeNotFoundToGetHisSalary_shouldBeReturnStatus404() throws Exception {
+        mockMvc.perform(get("/Employee/salary/1")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+        ).andExpect(status().isNotFound());
+    }
+
+
+
 
 
 
