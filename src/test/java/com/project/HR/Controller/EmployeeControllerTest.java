@@ -198,7 +198,7 @@ public class EmployeeControllerTest {
 
 
 @Test
-public void UpdateEmployee_thenReturnStates200() throws Exception {
+public void UpdateEmployee_thenReturnStates204() throws Exception {
     Department department = Department.builder().Name("dept1")
 
             .build();
