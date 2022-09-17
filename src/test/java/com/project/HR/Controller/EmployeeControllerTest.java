@@ -195,6 +195,43 @@ public class EmployeeControllerTest {
 
 
 
+    @Test
+    public void getAllEmployeeUnderManagerRec_ShouldReturnStatus200() throws Exception {
+        mockMvc.perform(get("/Employee/employeesUnderManager/73")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+        ).andExpect(status().isOk());
+    }
+
+    @Test
+    public void getAllEmployeeUnderManagerRec_WhereManagerNotExist_ShouldReturnStatus404() throws Exception {
+        mockMvc.perform(get("/Employee/employeesUnderManager/8")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+        ).andExpect(status().isNotFound());
+    }
+
+
+    @Test
+    public void getAllEmployeeUnderDirectlyManager_ShouldReturnStatus200() throws Exception {
+        mockMvc.perform(get("/Employee/manager/73")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+        ).andExpect(status().isOk());
+    }
+
+    @Test
+    public void getAllEmployeeUnderDirectlyManager_WhereManagerNotExist_ShouldReturnStatus404() throws Exception {
+        mockMvc.perform(get("/Employee/manager/8")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+        ).andExpect(status().isNotFound());
+    }
+
+
+
+
+
 
 
 

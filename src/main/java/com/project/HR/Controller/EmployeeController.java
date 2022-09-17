@@ -27,76 +27,82 @@ public class EmployeeController {
 
 
     @GetMapping(path = "/get/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody EmployeeDto getEmployee( @PathVariable int id) {
-        try {        return employeeService.getEmployeeDetails(id);
+    public @ResponseBody EmployeeDto getEmployee(@PathVariable int id) {
+        try {
+            return employeeService.getEmployeeDetails(id);
 
 
-        }
-        catch (Exception exception){  throw new ResponseStatusException(
-                HttpStatus.NOT_FOUND, "Id Not Found",exception);
+        } catch (Exception exception) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Id Not Found", exception);
         }
     }
-
 
 
     @PostMapping(path = "/add", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<EmployeeDto> createEmployee(@RequestBody EmployeeCommand employee) throws Exception {
-      var output=employeeService.addEmployee(employee);
-      if(output==null){
-          return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-      }
+        var output = employeeService.addEmployee(employee);
+        if (output == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
         return ResponseEntity.ok(output);
     }
 
-    @DeleteMapping(path = "/delete/{id}" , produces = MediaType.APPLICATION_JSON_VALUE)
-    public  String deleteEmployee(@PathVariable int id ){
+    @DeleteMapping(path = "/delete/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public String deleteEmployee(@PathVariable int id) {
         try {
-            return employeeService.deleteEmployee( id );
-        }
-        catch (Exception exception){  throw new ResponseStatusException(
-                HttpStatus.NOT_FOUND, "Id Not Found",exception);
+            return employeeService.deleteEmployee(id);
+        } catch (Exception exception) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Id Not Found", exception);
         }
     }
 
-    @GetMapping(path = "/team/{id}" , produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<EmployeeTeamDto> getAllEmployeesInTeam(@PathVariable int id ){
+    @GetMapping(path = "/team/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<EmployeeTeamDto> getAllEmployeesInTeam(@PathVariable int id) {
         try {
             return employeeService.getEmployeesInTeam(id);
 
-        }
-        catch (Exception exception){  throw new ResponseStatusException(
-                HttpStatus.NOT_FOUND, "Id Not Found",exception);
+        } catch (Exception exception) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, " Team dose not exist", exception);
         }
     }
 
-    @GetMapping(path = "/salary/{id}" ,produces = MediaType.APPLICATION_JSON_VALUE)
-    public SalaryDto getSalaryInfo(@PathVariable int id){
+    @GetMapping(path = "/salary/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public SalaryDto getSalaryInfo(@PathVariable int id) {
         try {
             return employeeService.getSalary(id);
 
-        }
-        catch (Exception exception){  throw new ResponseStatusException(
-                HttpStatus.NOT_FOUND, "Id Not Found",exception);
+        } catch (Exception exception) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Id Not Found", exception);
         }
 
     }
 
-    @PutMapping(path = "/" ,produces = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(path = "/", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void editEmployee(@RequestBody EmployeeEditCommand employeeEditCommand ){
+    public void editEmployee(@RequestBody EmployeeEditCommand employeeEditCommand) {
 
         employeeService.editeEmployeeInfo(employeeEditCommand);
     }
 
-    @GetMapping(path = "/employeesUnderManager/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<BasicEmployeeDto> employeesUnderManager(@PathVariable int id ){
-      return   employeeService.getSubEmloyeesRec(id);
+    @GetMapping(path = "/employeesUnderManager/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<BasicEmployeeDto> employeesUnderManager(@PathVariable int id) {
+        try {
+            return employeeService.getSubEmloyeesRec(id);
+
+        } catch (Exception exception) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Manager dose not exist", exception);
+        }
     }
 
 
-    @GetMapping(path = "/manager/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<BasicEmployeeDto> employeesUnderDirectlyManager(@PathVariable int id ){
-        return   employeeService.getSubEmployees(id);
+    @GetMapping(path = "/manager/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<BasicEmployeeDto> employeesUnderDirectlyManager(@PathVariable int id) {
+        try {
+            return employeeService.getSubEmployees(id);
+
+        } catch (Exception exception) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Manager dose not exist", exception);
+        }
     }
 
 
