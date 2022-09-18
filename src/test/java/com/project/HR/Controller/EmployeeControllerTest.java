@@ -189,6 +189,26 @@ public class EmployeeControllerTest {
   }
 
     @Test
+    public void checkEmployeeHasGrossSalary_shouldBeReturn90000() throws Exception {
+        mockMvc.perform(get("/Employee/salary/150")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+        ).andExpect(jsonPath("$.gross",is(90000.0)));
+    }
+
+
+    @Test
+    public void checkEmployeeHasNetSalary_whereGrossSalary90000_shouldBeReturn76000() throws Exception {
+        mockMvc.perform(get("/Employee/salary/150")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+        ).andExpect(jsonPath("$.net",is(76000.0)));
+    }
+
+
+
+
+    @Test
     public void checkEmployeeNotFoundToGetHisSalary_shouldBeReturnStatus404() throws Exception {
         mockMvc.perform(get("/Employee/salary/1")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -243,6 +263,13 @@ public void UpdateEmployee_thenReturnStates204() throws Exception {
                 .accept(MediaType.APPLICATION_JSON)
         ).andExpect(status().isOk());
     }
+
+//    public void getAllEmployeeUnderManagerRec_ShouldReturnStatus200() throws Exception {
+//        mockMvc.perform(get("/Employee/employeesUnderManager/73")
+//                .contentType(MediaType.APPLICATION_JSON)
+//                .accept(MediaType.APPLICATION_JSON)
+//        ).andExpect(jsonPath("$.get"));
+//    }
 
     @Test
     public void getAllEmployeeUnderManagerRec_WhereManagerNotExist_ShouldReturnStatus404() throws Exception {
