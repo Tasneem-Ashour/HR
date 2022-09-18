@@ -64,7 +64,7 @@ public class EmployeeControllerTest {
         Expertise expertise = Expertise.builder().Name("programming Languages").build();
         record.getExpertise().add(expertise);
 
-        this.mockMvc.perform(post("/Employee/add").contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(record))).andExpect(status().isOk()).andExpect(jsonPath("$.expertise", notNullValue()));
+        this.mockMvc.perform(post("/Employee").contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(record))).andExpect(status().isOk()).andExpect(jsonPath("$.expertise", notNullValue()));
 
 
     }
@@ -112,7 +112,7 @@ public class EmployeeControllerTest {
         EmployeeCommand record = EmployeeCommand.builder().FirstName("tasneem").LastName("essam").DOB(date).Graduation(Year.of(2019)).Salary(20000).departmentId(1).TeamId(1).expertise(new ArrayList<>()).MangerId(1).build();
         record.setDOB(date);
 
-        this.mockMvc.perform(post("/Employee/add").contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).content(objectMapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd")).writeValueAsString(record))).andExpect(jsonPath("$", notNullValue())).andExpect(jsonPath("$.firstName", is("tasneem")))
+        this.mockMvc.perform(post("/Employee").contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).content(objectMapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd")).writeValueAsString(record))).andExpect(jsonPath("$", notNullValue())).andExpect(jsonPath("$.firstName", is("tasneem")))
 
                 .andExpect(jsonPath("$.lastName", is("essam")))
 
@@ -129,7 +129,7 @@ public class EmployeeControllerTest {
 
                 .Graduation(Year.of(2019)).Gender("Female").Salary(20000).departmentId(1).TeamId(1).expertise(new ArrayList<>()).MangerId(1).build();
 
-        this.mockMvc.perform(post("/Employee/add").contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).content(objectMapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd")).writeValueAsString(employeeCommand))).andExpect(jsonPath("$.firstName", nullValue())).andExpect(jsonPath("$.lastName", nullValue()));
+        this.mockMvc.perform(post("/Employee").contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).content(objectMapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd")).writeValueAsString(employeeCommand))).andExpect(jsonPath("$.firstName", nullValue())).andExpect(jsonPath("$.lastName", nullValue()));
 
 
     }
@@ -137,18 +137,18 @@ public class EmployeeControllerTest {
     @Test
     public void getEmployeeDetailsTest_ShouldReturnStatus200() throws Exception {
 
-        mockMvc.perform(get("/Employee/get/1").contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
+        mockMvc.perform(get("/Employee/1").contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
     }
 
     @Test
     public void geEmployee_shouldReturnNotNull() throws Exception {
-        mockMvc.perform(get("/Employee/get/1").contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)).andExpect(jsonPath("$", notNullValue()));
+        mockMvc.perform(get("/Employee/1").contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)).andExpect(jsonPath("$", notNullValue()));
     }
 
 
     @Test
     public void geEmployeeDoneNotExist_shouldReturn404() throws Exception {
-        mockMvc.perform(get("/Employee/get/1000").contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)
+        mockMvc.perform(get("/Employee/1000").contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)
 
         ).andExpect(status().isNotFound());
     }
@@ -156,12 +156,12 @@ public class EmployeeControllerTest {
 
     @Test
     public void DeleteEmployee_shouldReturn200() throws Exception {
-        mockMvc.perform(delete("/Employee/delete/1").contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
+        mockMvc.perform(delete("/Employee/1").contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
     }
 
     @Test
     public void DeleteEmployeeThatNotExist_shouldReturnEmployeeNotFound() throws Exception {
-        mockMvc.perform(delete("/Employee/delete/1000").contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)).andExpect(status().isNotFound());
+        mockMvc.perform(delete("/Employee/1000").contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)).andExpect(status().isNotFound());
     }
 
   @Test

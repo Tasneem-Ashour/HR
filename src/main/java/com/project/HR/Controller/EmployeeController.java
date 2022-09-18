@@ -26,7 +26,7 @@ public class EmployeeController {
     private EmployeeService employeeService;
 
 
-    @GetMapping(path = "/get/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody EmployeeDto getEmployee(@PathVariable int id) {
         try {
             return employeeService.getEmployeeDetails(id);
@@ -38,7 +38,7 @@ public class EmployeeController {
     }
 
 
-    @PostMapping(path = "/add", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path = "/", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<EmployeeDto> createEmployee(@RequestBody EmployeeCommand employee) throws Exception {
         var output = employeeService.addEmployee(employee);
         if (output == null) {
@@ -47,7 +47,7 @@ public class EmployeeController {
         return ResponseEntity.ok(output);
     }
 
-    @DeleteMapping(path = "/delete/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @DeleteMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public String deleteEmployee(@PathVariable int id) {
         try {
             return employeeService.deleteEmployee(id);
