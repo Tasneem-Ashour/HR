@@ -40,7 +40,6 @@ public class EmployeeService {
 
     @Autowired
     DepartmentRepository departmentRepository;
-
     private final double ratio =0.85;
     private final int insurance = 500;
 
@@ -73,13 +72,16 @@ public class EmployeeService {
         Employee employee = employeeRepository.findById(manger_Id).get();
         return  employee;
     }
-    public EmployeeDto getEmployeeDetails(int id) {
+    public EmployeeDto getEmployeeDetails(int id) throws Exception {
+        if(!employeeRepository.findById(id).isPresent()){
+           throw  new Exception ("Id dose not exist: "+id);
+        }
         Employee employee = employeeRepository.findById(id).get();
+
 
         EmployeeDto employeeDto = employeeConverter.covertEntityToDTO(employee);
         return employeeDto;
     }
-
 
     public String deleteEmployee(int id) {
         Employee employee = employeeRepository.findById(id).get();
@@ -94,7 +96,10 @@ public class EmployeeService {
         return String.format("employee %s delete successfully", id);
     }
 
-    public List<EmployeeTeamDto> getEmployeesInTeam(int id) {
+    public List<EmployeeTeamDto> getEmployeesInTeam(int id) throws Exception {
+if(teamRepository.findById(id).isEmpty()){
+    throw  new Exception ("Team dose not exist");
+}
         var team = teamRepository.findById(id).get();
         List<EmployeeTeamDto> employees = new ArrayList<>();
         team.getEmployees().forEach(employee -> employees.add(employeeConverter.convertEntityEmployeeTeamDto(employee)));
@@ -127,7 +132,10 @@ public class EmployeeService {
 
     }
 
-    public List<BasicEmployeeDto> getSubEmloyeesRec(int managerId) {
+    public List<BasicEmployeeDto> getSubEmloyeesRec(int managerId) throws Exception {
+        if(employeeRepository.findById(managerId).isEmpty()){
+            throw  new Exception ("Id dose not exist: "+managerId);
+        }
         List<Employee> employees = new ArrayList<Employee>();
         Employee manager = employeeRepository.findById(managerId).get();
         fillSubEmployees(manager, employees);
@@ -148,7 +156,10 @@ public class EmployeeService {
         manager.getEmployees().forEach(employee -> fillSubEmployees(employee, employees));
     }
 
-    public List<BasicEmployeeDto> getSubEmployees(int managerId) {
+    public List<BasicEmployeeDto> getSubEmployees(int managerId) throws Exception {
+        if(employeeRepository.findById(managerId).isEmpty()){
+            throw  new Exception ("Id dose not exist: "+managerId);
+        }
         Employee manager = employeeRepository.findById(managerId).get();
         List<BasicEmployeeDto> listDto = new ArrayList<>();
         manager.getEmployees().forEach(e-> listDto.add(employeeConverter.covertEntityBasicEmployeeToDTO(e)));
