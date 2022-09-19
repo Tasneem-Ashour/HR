@@ -55,7 +55,7 @@ dependencies {
     testImplementation 'org.springframework:spring-test:5.3.22'
     implementation group: 'org.modelmapper', name: 'modelmapper', version: '2.1.1'
     testImplementation group: 'org.dbunit', name: 'dbunit', version: '2.5.1'
-    implementation group: 'org.flywaydb', name: 'flyway-mysql', version: '9.3.0'
+//    implementation group: 'org.flywaydb', name: 'flyway-mysql', version: '9.3.0'
 
 
 }

@@ -30,8 +30,7 @@ public class EmployeeService {
     EmployeeRepository employeeRepository;
 
 
-    @Autowired
-    GetEntityFromFiled getEntityFromFiled;
+
 
     @Autowired
     TeamRepository teamRepository;
@@ -42,39 +41,38 @@ public class EmployeeService {
     @Autowired
     DepartmentRepository departmentRepository;
 
+    private final double ratio =0.85;
+    private final int insurance = 500;
 
     public EmployeeDto addEmployee(EmployeeCommand employeeCommand) throws Exception {
-        if (employeeCommand.getMangerId() == null && employeeRepository.getTopEmployee() != null) {
-            return null;
-
+        if (employeeCommand.getMangerId() == null && isEmployeeHasNoManger()) {
+            throw  new Exception("Manager Id can not be null");
         }
         Employee employee = employeeConverter.convertCommandToEntity(employeeCommand);
-
-        Department department = getEntityFromFiled.getDepartmentFromDeptId(employeeCommand);
-
+        Department department = departmentRepository.findById(employeeCommand.getDepartmentId()).get();
         employee.setDepartment(department);
-        Team team = getEntityFromFiled.getTeamFromTeamId(employeeCommand);
-
+        Team team = teamRepository.findById(employeeCommand.getTeamId()).get();
         employee.setTeam(team);
-
-        Employee manger = getEntityFromFiled.getManager(employeeCommand);
-        if (manger == null && employeeCommand.getMangerId() != null) {
-            return null;
-        }
-
+        Employee manger = getManager(employeeCommand.getMangerId());
         employee.setMangerId(manger);
-
-
         employee.setExpertise(employeeCommand.getExpertise());
-
-
         employee = employeeRepository.save(employee);
-
-        var tasneem = employeeConverter.covertEntityToDTO(employee);
-        tasneem.setMangerId(employeeConverter.covertEntityEmployeeToDTO(employee.getMangerId()));
-        return tasneem;
+        var employeeDto = employeeConverter.covertEntityToDTO(employee);
+        employeeDto.setMangerId(employeeConverter.covertEntityEmployeeToDTO(employee.getMangerId()));
+        return employeeDto;
     }
 
+    private boolean isEmployeeHasNoManger() {
+        return employeeRepository.getTopEmployeeManger() != null;
+    }
+
+    private Employee getManager(int manger_Id){
+        if(employeeRepository.findById(manger_Id).isEmpty()){
+            throw new RuntimeException("Manager Id not found ");
+        }
+        Employee employee = employeeRepository.findById(manger_Id).get();
+        return  employee;
+    }
     public EmployeeDto getEmployeeDetails(int id) {
         Employee employee = employeeRepository.findById(id).get();
 
@@ -89,7 +87,7 @@ public class EmployeeService {
         if (manager == null) {
             return "Can not delete employee";
         }
-        var subEmployees = employeeRepository.getEmployeesByManagerId(id);
+        var subEmployees = employeeRepository.getEmployeesByManagerId(manager.getId());
         subEmployees.forEach(e -> e.setMangerId(manager));
         employeeRepository.saveAll(subEmployees);
         employeeRepository.deleteById(id);
@@ -106,7 +104,7 @@ public class EmployeeService {
 
     public SalaryDto getSalary(int id) {
         Employee employee = employeeRepository.findById(id).get();
-        return new SalaryDto(employee.getSalary() * 0.85 - 500, employee.getSalary());
+        return new SalaryDto(employee.getSalary() * ratio -insurance, employee.getSalary());
     }
 
     public void editeEmployeeInfo(EmployeeEditCommand employeeEditCommand) {
@@ -138,7 +136,7 @@ public class EmployeeService {
         return listDto;
     }
 
-    public void fillSubEmployees(Employee manager, List<Employee> employees) {
+    private void fillSubEmployees(Employee manager, List<Employee> employees) {
 
         //Base Case
         if (manager.getEmployees() == null || manager.getEmployees().size() == 0) return;
