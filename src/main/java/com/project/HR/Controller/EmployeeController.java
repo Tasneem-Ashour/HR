@@ -12,7 +12,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -27,83 +26,37 @@ public class EmployeeController {
 
 
     @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody EmployeeDto getEmployee(@PathVariable int id) {
-        try {
-            return employeeService.getEmployeeDetails(id);
-
-
-        } catch (Exception exception) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Id Not Found", exception);
-        }
+    public @ResponseBody EmployeeDto getEmployee(@PathVariable int id) throws Exception {
+        return employeeService.getEmployeeDetails(id);
     }
-
-
     @PostMapping(path = "/", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<EmployeeDto> createEmployee(@RequestBody EmployeeCommand employee) throws Exception {
         var output = employeeService.addEmployee(employee);
-        if (output == null) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-        }
         return ResponseEntity.ok(output);
     }
-
     @DeleteMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public String deleteEmployee(@PathVariable int id) {
-        try {
-            return employeeService.deleteEmployee(id);
-        } catch (Exception exception) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Id Not Found", exception);
-        }
+        return employeeService.deleteEmployee(id);
     }
-
     @GetMapping(path = "/team/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<EmployeeTeamDto> getAllEmployeesInTeam(@PathVariable int id) {
-        try {
-            return employeeService.getEmployeesInTeam(id);
-
-        } catch (Exception exception) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, " Team dose not exist", exception);
-        }
+    public List<EmployeeTeamDto> getAllEmployeesInTeam(@PathVariable int id) throws Exception {
+        return employeeService.getEmployeesInTeam(id);
     }
-
     @GetMapping(path = "/salary/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public SalaryDto getSalaryInfo(@PathVariable int id) {
-        try {
-            return employeeService.getSalary(id);
-
-        } catch (Exception exception) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Id Not Found", exception);
-        }
-
+        return employeeService.getSalary(id);
     }
-
     @PutMapping(path = "/", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void editEmployee(@RequestBody EmployeeEditCommand employeeEditCommand) {
-
         employeeService.editeEmployeeInfo(employeeEditCommand);
     }
-
     @GetMapping(path = "/employeesUnderManager/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<BasicEmployeeDto> employeesUnderManager(@PathVariable int id) {
-        try {
-            return employeeService.getSubEmloyeesRec(id);
-
-        } catch (Exception exception) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Manager dose not exist", exception);
-        }
+    public List<BasicEmployeeDto> employeesUnderManager(@PathVariable int id) throws Exception {
+        return employeeService.getSubEmloyeesRec(id);
     }
-
-
     @GetMapping(path = "/manager/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<BasicEmployeeDto> employeesUnderDirectlyManager(@PathVariable int id) {
-        try {
-            return employeeService.getSubEmployees(id);
-
-        } catch (Exception exception) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Manager dose not exist", exception);
-        }
+    public List<BasicEmployeeDto> employeesUnderDirectlyManager(@PathVariable int id) throws Exception {
+        return employeeService.getSubEmployees(id);
     }
-
-
 }
