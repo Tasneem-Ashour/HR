@@ -4,9 +4,9 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 
 import javax.persistence.*;
-import java.sql.Date;
 import java.time.Year;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Builder
