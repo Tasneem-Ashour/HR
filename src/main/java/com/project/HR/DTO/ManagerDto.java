@@ -18,7 +18,5 @@ public class ManagerDto {
     private String Graduation;
     private Date DOB;
     private double Salary;
-//    private Department department;
-//    private List<Expertise> expertise;
     private Integer TeamId;
 }

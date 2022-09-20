@@ -1,9 +1,9 @@
 package com.project.HR.DTO;
-
+import com.project.HR.Entity.Expertise;
 import lombok.*;
 
 import java.util.Date;
-
+import java.util.List;
 @Data
 @Builder
 @Setter
@@ -18,8 +18,8 @@ public class EmployeeDto {
     private String Graduation;
     private Date DOB;
     private double Salary;
-//    private Department department;
-//    private List<Expertise> expertise;
+    private DepartmentDto department;
+    private List<Expertise> expertise;
     private Integer TeamId;
     private ManagerDto MangerId;
 
