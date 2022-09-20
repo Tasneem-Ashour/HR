@@ -16,7 +16,7 @@ CREATE TABLE `employee`(
   `last_name` varchar(255) DEFAULT NULL,
   `salary` varchar(255) DEFAULT NULL,
   `dob` date DEFAULT NULL,
-  `graduation` tinyblob,
+  `graduation` varchar(4),
   `dept_id` int DEFAULT NULL,
   `gender` varchar(255) DEFAULT NULL,
   `team_id` int DEFAULT NULL,
