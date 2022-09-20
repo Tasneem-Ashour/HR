@@ -13,9 +13,10 @@ import java.util.List;
 @Transactional
 public interface EmployeeRepository extends JpaRepository<Employee, Integer> {
 
-    @Query(value = "select * from Employee where manger_id is null limit 1", nativeQuery = true)
-    public Employee getTopEmployee();
+    @Query(value = "select * from Employee where manager_id is null limit 1", nativeQuery = true)
+    public Employee getTopEmployeeManger();
 
     @Query(value = "select * from Employee where manger_id = :manger_id", nativeQuery = true)
     public List<Employee> getEmployeesByManagerId(@Param("manger_id") int managerId);
+//    List<Employee> findAllEmployee(int managerId);
 }
