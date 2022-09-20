@@ -54,9 +54,13 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework:spring-test:5.3.22'
     implementation group: 'org.modelmapper', name: 'modelmapper', version: '2.1.1'
-//    testImplementation group: 'org.dbunit', name: 'dbunit', version: '2.5.1'
     implementation 'org.springframework.boot:spring-boot-starter'
     implementation group: 'org.flywaydb', name: 'flyway-mysql', version: '9.3.0'
+//    testImplementation group: 'org.flywaydb.flyway-test-extensions', name: 'flyway-spring-test', version: '7.0.0'
+    testImplementation group: 'com.h2database', name: 'h2', version: '2.1.214'
+    testImplementation group: 'org.dbunit', name: 'dbunit', version: '2.5.1'
+
+
 
 
 

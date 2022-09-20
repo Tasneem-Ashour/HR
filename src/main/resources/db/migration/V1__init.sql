@@ -9,6 +9,7 @@ CREATE TABLE  `team` (
   `name` varchar(255) not NULL,
   PRIMARY KEY (`id`)
 ) ;
+
 CREATE TABLE `employee`(
   `id` int NOT NULL,
   `first_name` varchar(255) DEFAULT NULL,
@@ -20,15 +21,13 @@ CREATE TABLE `employee`(
   `gender` varchar(255) DEFAULT NULL,
   `team_id` int DEFAULT NULL,
   `manager_id` int DEFAULT NULL,
-  `emp_id` int DEFAULT NULL,
   PRIMARY KEY (`id`),
   FOREIGN KEY (`team_id`) REFERENCES `team` (`id`),
   FOREIGN KEY (`manager_id`) REFERENCES `employee` (`id`),
-  FOREIGN KEY (`dept_id`) REFERENCES `department` (`id`),
-  FOREIGN KEY (`emp_id`) REFERENCES `team` (`id`)
+  FOREIGN KEY (`dept_id`) REFERENCES `department` (`id`)
 );
 
-CREATE TABLE `expertise` (
+CREATE TABLE `expertise`(
   `id` int NOT NULL auto_increment,
   `name` varchar(255) not NULL,
   `emp_id` int not NULL,
