@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 
 import java.sql.Date;
-import java.time.Year;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,7 +18,7 @@ public class EmployeeEditCommand {
     private String FirstName;
     private String LastName;
     private String Gender;
-    private Year Graduation;
+    private String Graduation;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     private Date DOB;
     private Double Salary;

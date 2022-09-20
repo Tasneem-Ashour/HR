@@ -65,11 +65,11 @@ public class EmployeeService {
         return employeeRepository.getTopEmployeeManger() != null;
     }
 
-    private Employee getManager(int manger_Id){
-        if(employeeRepository.findById(manger_Id).isEmpty()){
+    private Employee getManager(int manager_Id){
+        if(employeeRepository.findById(manager_Id).isEmpty()){
             throw new RuntimeException("Manager Id not found ");
         }
-        Employee employee = employeeRepository.findById(manger_Id).get();
+        Employee employee = employeeRepository.findById(manager_Id).get();
         return  employee;
     }
     public EmployeeDto getEmployeeDetails(int id) throws Exception {
