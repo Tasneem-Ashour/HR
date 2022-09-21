@@ -15,7 +15,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 public class Expertise {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer Id ;
     String Name ;
 //    @ManyToOne

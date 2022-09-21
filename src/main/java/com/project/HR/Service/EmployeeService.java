@@ -48,10 +48,9 @@ public class EmployeeService {
         employee.setMangerId(manger);
         employee.setExpertise(employeeCommand.getExpertise());
         employee = employeeRepository.save(employee);
-        DepartmentDto departmentDto = departmentConverter.covertEntityToDTO(department);
         var employeeDto = employeeConverter.covertEntityToDTO(employee);
         employeeDto.setMangerId(employeeConverter.covertEntityEmployeeToDTO(employee.getMangerId()));
-        employeeDto.setDepartment(departmentDto);
+        employeeDto.setDepartment(departmentConverter.covertEntityToDTO(department));
         return employeeDto;
     }
     private boolean isEmployeeHasNoManger() {
@@ -106,7 +105,7 @@ public class EmployeeService {
         Employee employee = employeeRepository.findById(id).get();
         employeeConverter.mapEitDtoToEmployee(employeeEditCommand, employee);
         expertiseRepository.deleteExpertisesByEmpId(id);
-        List<Expertise> expertises = employeeEditCommand.getExpertise().stream().map(exp -> new Expertise(null, exp)).collect(Collectors.toList());
+        List<Expertise> expertises = employeeEditCommand.getExpertise().stream().map(exp -> new Expertise(null, exp.getName())).collect(Collectors.toList());
         employee.setExpertise(expertises);
         Team team = teamRepository.findById(employeeEditCommand.getTeamId()).get();
         employee.setTeam(team);

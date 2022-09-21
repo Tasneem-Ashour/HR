@@ -1,306 +1,292 @@
 package com.project.HR.Controller;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project.HR.Command.EmployeeCommand;
 import com.project.HR.Command.EmployeeEditCommand;
-import com.project.HR.Entity.Department;
 import com.project.HR.Entity.Employee;
 import com.project.HR.Entity.Expertise;
-import com.project.HR.Entity.Team;
 import com.project.HR.Repostory.EmployeeRepository;
-import com.project.HR.Service.EmployeeService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.Date;
-import java.text.SimpleDateFormat;
-import java.time.Year;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import static org.hamcrest.Matchers.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
-
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 @SpringBootTest
 @AutoConfigureMockMvc
 @Transactional
-
+@AutoConfigureTestDatabase
 public class EmployeeControllerTest {
-
     @Autowired
     MockMvc mockMvc;
     @Autowired
     ObjectMapper objectMapper;
-
-
     @Autowired
     EmployeeRepository employeeRepository;
-    @Autowired
-    EmployeeService employeeService;
 
     @Test
     public void addEmployee_thenReturnStates200() throws Exception {
-        Department department = Department.builder().Name("dept1")
-
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(1996,5,1);
+        EmployeeCommand record = EmployeeCommand.builder()
+        .FirstName("Tasneem")
+        .LastName("Essam")
+        .Gender("Femail")
+        .TeamId(1)
+        .departmentId(1)
+        .MangerId(1)
+        .Salary(20000.0)
+        .Graduation("2019")
+        .expertise(new ArrayList<>())
+        .DOB(calendar.getTime())
+        .build();
+        Expertise expertise = Expertise.builder()
+        .Name("java")
                 .build();
-
-        Team team = Team.builder().Name("Team1").build();
-
-        Employee manger = Employee.builder()
-
-                .FirstName("manger").LastName("Manger").build();
-
-        EmployeeCommand record = EmployeeCommand.builder().FirstName("tasneem").LastName("essam").DOB(new Date(1 / 6 / 1996)).Graduation(Year.of(2019)).Gender("Female").Salary(20000).departmentId(1).TeamId(1).expertise(new ArrayList<>()).MangerId(1).build();
-
-
-        Expertise expertise = Expertise.builder().Name("programming Languages").build();
         record.getExpertise().add(expertise);
-
-        this.mockMvc.perform(post("/Employee").contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(record))).andExpect(status().isOk()).andExpect(jsonPath("$.expertise", notNullValue()));
-
+        this.mockMvc.perform(post("/Employee/")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(record)))
+                .andExpect(status().isOk());
 
     }
-
     @Test
     public void EmployeeMangerRelationTest() {
-
-        Employee manger = Employee
-
-                .builder()
-
-                .FirstName("Manger").LastName("Manger").employees(new ArrayList<>())
-
-                .build();
-
-        Employee employee = Employee.builder()
-
-                .FirstName("emp").LastName("emp").build();
-
-
+        Employee manger = Employee.builder().FirstName("Manger").LastName("Manger").employees(new ArrayList<>()).build();
+        Employee employee = Employee.builder().FirstName("emp").LastName("emp").build();
         manger.getEmployees().add(employee);
-
-
         employee.setMangerId(manger);
         employeeRepository.save(employee);
-
-
         employeeRepository.save(manger);
         Employee dbEmployee = employeeRepository.findById(employee.getId()).get();
         Employee dbManger = employeeRepository.findById(manger.getId()).get();
-
         Assertions.assertNotNull(dbEmployee);
         Assertions.assertNotNull(dbEmployee.getMangerId());
         Assertions.assertNotNull(dbManger);
         Assertions.assertNull(dbManger.getDepartment());
-
-
-        Assertions.assertTrue(dbManger.getEmployees().size() > 0);
+        assertTrue(dbManger.getEmployees().size() > 0);
     }
-
     @Test
     public void addEmployee_theReturnEmployeeObject() throws Exception {
-        Date date = new Date(1996 - 06 - 01);
-
-        EmployeeCommand record = EmployeeCommand.builder().FirstName("tasneem").LastName("essam").DOB(date).Graduation(Year.of(2019)).Salary(20000).departmentId(1).TeamId(1).expertise(new ArrayList<>()).MangerId(1).build();
-        record.setDOB(date);
-
-        this.mockMvc.perform(post("/Employee").contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).content(objectMapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd")).writeValueAsString(record))).andExpect(jsonPath("$", notNullValue())).andExpect(jsonPath("$.firstName", is("tasneem")))
-
-                .andExpect(jsonPath("$.lastName", is("essam")))
-
-                .andExpect(jsonPath("$.salary", is(20000.0))).andExpect(jsonPath("$.dob").value("1996-06-01")).andExpect(jsonPath("$.graduation", is("2019")))
-
-                .andExpect(jsonPath("$.teamId", is(1))).andExpect(jsonPath("$.expertise", empty()));
-
-
-    }
-
-    @Test
-    public void addEmployee_withoutdFirstName_shouldReturn() throws Exception {
-        EmployeeCommand employeeCommand = EmployeeCommand.builder()
-
-                .Graduation(Year.of(2019)).Gender("Female").Salary(20000).departmentId(1).TeamId(1).expertise(new ArrayList<>()).MangerId(1).build();
-
-        this.mockMvc.perform(post("/Employee").contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).content(objectMapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd")).writeValueAsString(employeeCommand))).andExpect(jsonPath("$.firstName", nullValue())).andExpect(jsonPath("$.lastName", nullValue()));
-
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(1996,5,1);
+        EmployeeCommand record = EmployeeCommand.builder()
+                .FirstName("Tasneem")
+                .LastName("Essam")
+                .Gender("Female")
+                .TeamId(1)
+                .departmentId(1)
+                .MangerId(1)
+                .Salary(20000.0)
+                .Graduation("2019")
+                .expertise(new ArrayList<>())
+                .DOB(calendar.getTime())
+                .build();
+        Expertise expertise = Expertise.builder()
+                .Name("java")
+                .build();
+        record.getExpertise().add(expertise);
+        this.mockMvc.perform(post("/Employee/")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(record)))
+                .andExpect(jsonPath("$.firstName", is("Tasneem")))
+                .andExpect(jsonPath("$.lastName", is("Essam")))
+                .andExpect(jsonPath("$.dob", is("1996-06-01T00:00:00.000+00:00")))
+                .andExpect(jsonPath("$.salary", is(20000.0)))
+                .andExpect(jsonPath("$.gender", is("Female")))
+                .andExpect(jsonPath("$.graduation", is("2019")))
+                .andExpect(jsonPath("$.teamId", is(1)))
+                .andExpect(jsonPath("$.expertise.length()", is(1)))
+                .andExpect(jsonPath("$.expertise", hasSize(1)))
+                .andExpect(jsonPath("$.department.length()", is(2)));
 
     }
 
     @Test
     public void getEmployeeDetailsTest_ShouldReturnStatus200() throws Exception {
-
-        mockMvc.perform(get("/Employee/1").contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
+        mockMvc.perform(get("/Employee/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
     }
+    @Test
+    public void getEmployeeDetailsTest_ShouldReturnEmployeeObject() throws Exception {
+        mockMvc.perform(get("/Employee/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.firstName", is("tasneem")))
+                .andExpect(jsonPath("$.lastName", is("essam")))
+                .andExpect(jsonPath("$.dob", is("1996-05-31T21:00:00.000+00:00")))
+                .andExpect(jsonPath("$.salary", is(20000.0)))
+                .andExpect(jsonPath("$.gender", is("female")))
+                .andExpect(jsonPath("$.graduation", is("2019")))
+                .andExpect(jsonPath("$.teamId", is(1)))
+                .andExpect(jsonPath("$.department.length()", is(2)));
+
+    }
+
 
     @Test
     public void geEmployee_shouldReturnNotNull() throws Exception {
-        mockMvc.perform(get("/Employee/1").contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)).andExpect(jsonPath("$", notNullValue()));
+        mockMvc.perform(get("/Employee/2")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$", notNullValue()));
     }
-
-
     @Test
     public void geEmployeeDoneNotExist_shouldReturn404() throws Exception {
-        mockMvc.perform(get("/Employee/1000").contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)
+        mockMvc.perform(get("/Employee/1000")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(content().json("{'message':'Id dose not exist: 1000'}"));
 
-        ).andExpect(status().isNotFound());
+//                .andExpect(result -> assertEquals(result.getResponse().getErrorMessage() ,"Exception: Id dose not exist: 1000"));
+
+//                .andExpect(jsonPath("$.exception",is("Id dose not exist: 1000")));
+//
+//        Assertions.assertThrows(getResponse().getErrorMessage(),"Id dose not exist: 1000");
     }
-
-
     @Test
     public void DeleteEmployee_shouldReturn200() throws Exception {
-        mockMvc.perform(delete("/Employee/1").contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
+        mockMvc.perform(delete("/Employee/2")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
     }
-
     @Test
-    public void DeleteEmployeeThatNotExist_shouldReturnEmployeeNotFound() throws Exception {
+    public void deleteEmployeeThatNotExist_shouldReturnEmployeeNotFound() throws Exception {
         mockMvc.perform(delete("/Employee/1000").contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)).andExpect(status().isNotFound());
     }
-
-  @Test
-    public void GetEmployeesInTeam_ShouldReturnStatus200() throws Exception {
+    @Test
+    public void getEmployeesInTeam_ShouldReturnStatus200() throws Exception {
         mockMvc.perform(get("/Employee/team/1")
                 .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON)
-                ).andExpect(status().isOk());
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
 
-  }
+    }
 @Test
-    public void GetEmployeesInTeamEmpty_ShouldReturn404() throws Exception {
-        mockMvc.perform(get("/Employee/team/1000")
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON)
-        ).andExpect(status().isNotFound());
+    public void getEmployeesInTeam_ShouldContains4EmployeesWithFirstName() throws Exception {
+        mockMvc.perform(get("/Employee/team/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$",hasSize(4)))
+                .andExpect(jsonPath("$[*].firstName",
+                        containsInAnyOrder("tasneem", "Mahmoud","Noura","Ahmed")));
+
     }
 
-  @Test
+    @Test
+    public void getEmployeesInTeamEmpty_ShouldReturn404() throws Exception {
+        mockMvc.perform(get("/Employee/team/1000").contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)).andExpect(status().isNotFound());
+    }
+    @Test
     public void checkEmployeeHasSalaryNetAndGross_shouldBeReturnStatus200() throws Exception {
-      mockMvc.perform(get("/Employee/salary/150")
-              .contentType(MediaType.APPLICATION_JSON)
-              .accept(MediaType.APPLICATION_JSON)
-      ).andExpect(status().isOk());
-  }
-
-    @Test
-    public void checkEmployeeHasGrossSalary_shouldBeReturn90000() throws Exception {
-        mockMvc.perform(get("/Employee/salary/150")
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON)
-        ).andExpect(jsonPath("$.gross",is(90000.0)));
-    }
-
-
-    @Test
-    public void checkEmployeeHasNetSalary_whereGrossSalary90000_shouldBeReturn76000() throws Exception {
-        mockMvc.perform(get("/Employee/salary/150")
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON)
-        ).andExpect(jsonPath("$.net",is(76000.0)));
-    }
-
-
-
-
-    @Test
-    public void checkEmployeeNotFoundToGetHisSalary_shouldBeReturnStatus404() throws Exception {
         mockMvc.perform(get("/Employee/salary/1")
                 .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON)
-        ).andExpect(status().isNotFound());
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
     }
-
-
-@Test
-public void UpdateEmployee_thenReturnStates204() throws Exception {
-    Department department = Department.builder().Name("dept1")
-
-            .build();
-
-    Team team = Team.builder().Name("Team1").build();
-
-    Employee manger = Employee.builder()
-
-            .FirstName("manger").LastName("Manger").build();
-
-    EmployeeEditCommand updateEmployee = EmployeeEditCommand.builder()
-            .Id(100)
-            .FirstName("tasneem")
-            .LastName("ashour")
-            .expertise(new ArrayList<>())
-            .Salary(30000.0)
-            .departmentId(1)
-            .teamId(1)
-            .expertise(new ArrayList<>())
-            .MangerId(1)
-            .build();
-
-
-    String expertise = "java";
-    updateEmployee.getExpertise().add(expertise);
-
-
-    this.mockMvc.perform(put("/Employee/")
-            .contentType(MediaType.APPLICATION_JSON)
-            .accept(MediaType.APPLICATION_JSON)
-            .content(objectMapper.writeValueAsString(updateEmployee)))
-            .andExpect(status().isNoContent());
-
-
-
-
-}
+    @Test
+    public void checkEmployeeHasGrossSalary_shouldBeReturn20000() throws Exception {
+        mockMvc.perform(get("/Employee/salary/1")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.gross", is(20000.0)));
+    }
+    @Test
+    public void checkEmployeeHasNetSalary_whereGrossSalary20000_shouldBeReturn16500() throws Exception {
+        mockMvc.perform(get("/Employee/salary/1")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.net", is(16500.0)));
+    }
+    @Test
+    public void checkEmployeeNotFoundToGetHisSalary_shouldBeReturnStatus404() throws Exception {
+        mockMvc.perform(get("/Employee/salary/8").contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)).andExpect(status().isNotFound());
+    }
+    @Test
+    public void UpdateEmployee_thenReturnStates204() throws Exception {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(1996,5,1);
+        EmployeeEditCommand updateEmployee = EmployeeEditCommand.builder()
+                .Id(4)
+                .FirstName("Ahmed")
+                .LastName("Mohammed")
+                .Gender("Male")
+                .DOB( calendar.getTime())
+                .Graduation("2012")
+                .expertise(new ArrayList<>())
+                .Salary(10000.0)
+                .departmentId(1)
+                .TeamId(1)
+                .expertise(new ArrayList<>())
+                .MangerId(2)
+                .build();
+        Expertise expertise = Expertise.builder()
+                .Name("java")
+                .build();
+        updateEmployee.getExpertise().add(expertise);
+        this.mockMvc.perform(put("/Employee/")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(updateEmployee)))
+                .andExpect(status().isNoContent());
+//                .andExpect(jsonPath("$.firstName",is("Ahmed")))
+//                .andExpect(jsonPath("$.salary", is(10000.0)));
+    }
     @Test
     public void getAllEmployeeUnderManagerRec_ShouldReturnStatus200() throws Exception {
-        mockMvc.perform(get("/Employee/employeesUnderManager/73")
+        mockMvc.perform(get("/Employee/employeesUnderManager/1")
                 .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON)
-        ).andExpect(status().isOk());
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
     }
 
-//    public void getAllEmployeeUnderManagerRec_ShouldReturnStatus200() throws Exception {
-//        mockMvc.perform(get("/Employee/employeesUnderManager/73")
-//                .contentType(MediaType.APPLICATION_JSON)
-//                .accept(MediaType.APPLICATION_JSON)
-//        ).andExpect(jsonPath("$.get"));
-//    }
-
+    @Test
+    public void getAllEmployeeUnderManagerRec_ShouldReturn3EmployeesWithFirstName() throws Exception {
+        mockMvc.perform(get("/Employee/employeesUnderManager/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$",hasSize(3)))
+                .andExpect(jsonPath("$[*].firstName",
+                        containsInAnyOrder( "Mahmoud","Noura","Ahmed")));    }
     @Test
     public void getAllEmployeeUnderManagerRec_WhereManagerNotExist_ShouldReturnStatus404() throws Exception {
-        mockMvc.perform(get("/Employee/employeesUnderManager/8")
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON)
-        ).andExpect(status().isNotFound());
+        mockMvc.perform(get("/Employee/employeesUnderManager/8").contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)).andExpect(status().isNotFound());
     }
-
-
     @Test
     public void getAllEmployeeUnderDirectlyManager_ShouldReturnStatus200() throws Exception {
-        mockMvc.perform(get("/Employee/manager/73")
+        mockMvc.perform(get("/Employee/manager/2")
                 .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON)
-        ).andExpect(status().isOk());
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+
     }
 
     @Test
-    public void getAllEmployeeUnderDirectlyManager_WhereManagerNotExist_ShouldReturnStatus404() throws Exception {
-        mockMvc.perform(get("/Employee/manager/8")
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON)
-        ).andExpect(status().isNotFound());
+    public void getAllEmployeeUnderDirectlyManager_ShouldReturn2EmployeeWithCheckedFirstName() throws Exception {
+        mockMvc.perform(get("/Employee/manager/2")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$",hasSize(2)))
+                .andExpect(jsonPath("$[*].firstName",
+                        containsInAnyOrder("Noura","Ahmed")));
     }
-
-
-
-
-
-
-
-
+    @Test
+    public void getAllEmployeeUnderDirectlyManager_WhereManagerNotExist_ShouldReturnStatus404() throws Exception {
+        mockMvc.perform(get("/Employee/manager/8").contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)).andExpect(status().isNotFound());
+    }
 }

@@ -11,7 +11,7 @@ CREATE TABLE  `team` (
 ) ;
 
 CREATE TABLE `employee`(
-  `id` int NOT NULL,
+  `id` int NOT NULL auto_increment,
   `first_name` varchar(255) DEFAULT NULL,
   `last_name` varchar(255) DEFAULT NULL,
   `salary` varchar(255) DEFAULT NULL,
@@ -30,7 +30,7 @@ CREATE TABLE `employee`(
 CREATE TABLE `expertise`(
   `id` int NOT NULL auto_increment,
   `name` varchar(255) not NULL,
-  `emp_id` int not NULL,
+  `emp_id` int ,
   PRIMARY KEY (`id`),
    FOREIGN KEY (`emp_id`) REFERENCES `employee` (`id`)
 );

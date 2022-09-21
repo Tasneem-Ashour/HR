@@ -1,12 +1,10 @@
 package com.project.HR.Command;
-
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.project.HR.Entity.Expertise;
 import lombok.*;
 
-import java.sql.Date;
-import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-
 @Data
 @Builder
 @Setter
@@ -19,16 +17,12 @@ public class EmployeeEditCommand {
     private String LastName;
     private String Gender;
     private String Graduation;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private Date DOB;
-    private Double Salary;
-
-    private List<String> expertise = new ArrayList<>();
-
+    private double Salary;
     private Integer departmentId;
-
-    private Integer teamId;
-
+    private List<Expertise> expertise;
+    private Integer TeamId;
     private Integer MangerId;
 
 }

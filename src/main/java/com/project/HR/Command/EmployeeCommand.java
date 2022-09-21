@@ -15,9 +15,7 @@ import java.util.List;
 @AllArgsConstructor
 public class EmployeeCommand {
 
-    @NonNull
     private String FirstName;
-    @NonNull
     private String LastName;
     private String Gender;
     private String Graduation;

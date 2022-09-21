@@ -17,7 +17,7 @@ import java.util.List;
 @Table(name = "Team")
 public class Team {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer Id;
 
     private  String Name;
