@@ -1,5 +1,6 @@
 package com.project.HR.DTO;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 
 import java.time.Year;
@@ -16,6 +17,7 @@ public class BasicEmployeeDto {
     private String LastName;
     private String Gender;
     private Year Graduation;
+    @JsonFormat( pattern = "yyyy-MM-dd")
     private Date DOB;
     private double Salary;
 

@@ -18,7 +18,7 @@ public class EmployeeTeamDto {
     private String LastName;
     private String Gender;
     private String Graduation;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
+    @JsonFormat( pattern = "yyyy-MM-dd")
     private Date DOB;
     private Double Salary;
 

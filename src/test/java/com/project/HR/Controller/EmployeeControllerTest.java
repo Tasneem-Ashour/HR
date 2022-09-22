@@ -19,9 +19,11 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 import static org.hamcrest.Matchers.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 @SpringBootTest
 @AutoConfigureMockMvc
 @Transactional
@@ -62,7 +64,7 @@ public class EmployeeControllerTest {
 
     }
     @Test
-    public void EmployeeMangerRelationTest() {
+    public void employeeMangerRelationTest() {
         Employee manger = Employee.builder().FirstName("Manger").LastName("Manger").employees(new ArrayList<>()).build();
         Employee employee = Employee.builder().FirstName("emp").LastName("emp").build();
         manger.getEmployees().add(employee);
@@ -103,7 +105,7 @@ public class EmployeeControllerTest {
                         .content(objectMapper.writeValueAsString(record)))
                 .andExpect(jsonPath("$.firstName", is("Tasneem")))
                 .andExpect(jsonPath("$.lastName", is("Essam")))
-                .andExpect(jsonPath("$.dob", is("1996-06-01T00:00:00.000+00:00")))
+                .andExpect(jsonPath("$.dob", is("1996-06-01")))
                 .andExpect(jsonPath("$.salary", is(20000.0)))
                 .andExpect(jsonPath("$.gender", is("Female")))
                 .andExpect(jsonPath("$.graduation", is("2019")))
@@ -128,7 +130,7 @@ public class EmployeeControllerTest {
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.firstName", is("tasneem")))
                 .andExpect(jsonPath("$.lastName", is("essam")))
-                .andExpect(jsonPath("$.dob", is("1996-05-31T21:00:00.000+00:00")))
+                .andExpect(jsonPath("$.dob", is("1996-05-31")))
                 .andExpect(jsonPath("$.salary", is(20000.0)))
                 .andExpect(jsonPath("$.gender", is("female")))
                 .andExpect(jsonPath("$.graduation", is("2019")))
@@ -137,7 +139,6 @@ public class EmployeeControllerTest {
 
     }
 
-
     @Test
     public void geEmployee_shouldReturnNotNull() throws Exception {
         mockMvc.perform(get("/Employee/2")
@@ -145,29 +146,30 @@ public class EmployeeControllerTest {
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$", notNullValue()));
     }
+
     @Test
-    public void geEmployeeDoneNotExist_shouldReturn404() throws Exception {
-        mockMvc.perform(get("/Employee/1000")
+    public void geEmployeeDoneNotExist_shouldException() throws Exception {
+
+        assertThrows(org.springframework.web.util.NestedServletException.class,
+                ()->mockMvc.perform(get("/Employee/1000")
                 .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON))
-                .andExpect(content().json("{'message':'Id dose not exist: 1000'}"));
-
-//                .andExpect(result -> assertEquals(result.getResponse().getErrorMessage() ,"Exception: Id dose not exist: 1000"));
-
-//                .andExpect(jsonPath("$.exception",is("Id dose not exist: 1000")));
-//
-//        Assertions.assertThrows(getResponse().getErrorMessage(),"Id dose not exist: 1000");
+                .accept(MediaType.APPLICATION_JSON)));
     }
     @Test
-    public void DeleteEmployee_shouldReturn200() throws Exception {
+    public void deleteEmployee_shouldReturn200() throws Exception {
         mockMvc.perform(delete("/Employee/2")
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
     @Test
-    public void deleteEmployeeThatNotExist_shouldReturnEmployeeNotFound() throws Exception {
-        mockMvc.perform(delete("/Employee/1000").contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)).andExpect(status().isNotFound());
+    public void deleteEmployeeThatNotExist_shouldReturnException() throws Exception {
+        assertThrows(org.springframework.web.util.NestedServletException.class,
+                ()->mockMvc.perform(delete("/Employee/1000")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+        );
+
     }
     @Test
     public void getEmployeesInTeam_ShouldReturnStatus200() throws Exception {
@@ -189,8 +191,14 @@ public class EmployeeControllerTest {
     }
 
     @Test
-    public void getEmployeesInTeamEmpty_ShouldReturn404() throws Exception {
-        mockMvc.perform(get("/Employee/team/1000").contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)).andExpect(status().isNotFound());
+    public void getEmployeesInTeamEmpty_ShouldReturnException() throws Exception {
+        assertThrows(org.springframework.web.util.NestedServletException.class,
+                ()-> mockMvc.perform(get("/Employee/team/1000")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                        );
+
+
     }
     @Test
     public void checkEmployeeHasSalaryNetAndGross_shouldBeReturnStatus200() throws Exception {
@@ -214,11 +222,16 @@ public class EmployeeControllerTest {
                 .andExpect(jsonPath("$.net", is(16500.0)));
     }
     @Test
-    public void checkEmployeeNotFoundToGetHisSalary_shouldBeReturnStatus404() throws Exception {
-        mockMvc.perform(get("/Employee/salary/8").contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)).andExpect(status().isNotFound());
+    public void checkEmployeeNotFoundToGetHisSalary_shouldBeReturnException() throws Exception {
+        assertThrows(org.springframework.web.util.NestedServletException.class,
+                ()-> mockMvc.perform(get("/Employee/salary/8")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                        );
+
     }
     @Test
-    public void UpdateEmployee_thenReturnStates204() throws Exception {
+    public void updateEmployee_thenReturnStates204() throws Exception {
         Calendar calendar = Calendar.getInstance();
         calendar.set(1996,5,1);
         EmployeeEditCommand updateEmployee = EmployeeEditCommand.builder()
@@ -260,12 +273,17 @@ public class EmployeeControllerTest {
         mockMvc.perform(get("/Employee/employeesUnderManager/1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$",hasSize(3)))
-                .andExpect(jsonPath("$[*].firstName",
-                        containsInAnyOrder( "Mahmoud","Noura","Ahmed")));    }
+                         .andExpect(jsonPath("$",hasSize(3)))
+                         .andExpect(jsonPath("$[*].firstName",
+                          containsInAnyOrder( "Mahmoud","Noura","Ahmed")));    }
     @Test
-    public void getAllEmployeeUnderManagerRec_WhereManagerNotExist_ShouldReturnStatus404() throws Exception {
-        mockMvc.perform(get("/Employee/employeesUnderManager/8").contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)).andExpect(status().isNotFound());
+    public void getAllEmployeeUnderManagerRec_WhereManagerNotExist_ShouldReturnException() throws Exception {
+        assertThrows(org.springframework.web.util.NestedServletException.class,
+                ()->  mockMvc.perform(get("/Employee/employeesUnderManager/8")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+        );
+
     }
     @Test
     public void getAllEmployeeUnderDirectlyManager_ShouldReturnStatus200() throws Exception {
@@ -286,7 +304,10 @@ public class EmployeeControllerTest {
                         containsInAnyOrder("Noura","Ahmed")));
     }
     @Test
-    public void getAllEmployeeUnderDirectlyManager_WhereManagerNotExist_ShouldReturnStatus404() throws Exception {
-        mockMvc.perform(get("/Employee/manager/8").contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)).andExpect(status().isNotFound());
+    public void getAllEmployeeUnderDirectlyManager_WhereManagerNotExist_ShouldReturnException() throws Exception {
+        assertThrows(org.springframework.web.util.NestedServletException.class,
+                ()->mockMvc.perform(get("/Employee/manager/8")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)));
     }
 }

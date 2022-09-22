@@ -1,4 +1,5 @@
 package com.project.HR.DTO;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.project.HR.Entity.Expertise;
 import lombok.*;
 
@@ -16,6 +17,7 @@ public class EmployeeDto {
     private String LastName;
     private String Gender;
     private String Graduation;
+    @JsonFormat( pattern = "yyyy-MM-dd")
     private Date DOB;
     private double Salary;
     private DepartmentDto department;
