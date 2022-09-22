@@ -7,6 +7,6 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class DepartmentDto {
-    private Integer Id;
-    private String Name ;
+    private Integer id;
+    private String name;
 }

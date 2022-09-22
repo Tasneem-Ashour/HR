@@ -1,6 +1,4 @@
 package com.project.HR.Entity;
-
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 
 import javax.persistence.*;
@@ -19,14 +17,13 @@ import java.util.List;
 public class Employee {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer Id;
-    private String FirstName;
-    private String LastName;
-    private String Gender;
-    private String Graduation;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
-    private Date DOB;
-    private Double Salary;
+    private Integer id;
+    private String firstName;
+    private String lastName;
+    private String gender;
+    private String graduation;
+    private Date dob;
+    private Double salary;
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "Emp_Id")
     private List<Expertise> expertise = new ArrayList<>();
@@ -38,8 +35,8 @@ public class Employee {
     private Team team;
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "manager_Id")
-    private Employee MangerId;
-    @OneToMany(mappedBy = "MangerId")
+    private Employee mangerId;
+    @OneToMany(mappedBy = "mangerId")
     private List<Employee> employees = new ArrayList<>();
 
 

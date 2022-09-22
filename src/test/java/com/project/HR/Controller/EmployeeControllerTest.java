@@ -41,19 +41,19 @@ public class EmployeeControllerTest {
         Calendar calendar = Calendar.getInstance();
         calendar.set(1996,5,1);
         EmployeeCommand record = EmployeeCommand.builder()
-        .FirstName("Tasneem")
-        .LastName("Essam")
-        .Gender("Femail")
-        .TeamId(1)
+        .firstName("Tasneem")
+        .lastName("Essam")
+        .gender("Femail")
+        .teamId(1)
         .departmentId(1)
-        .MangerId(1)
-        .Salary(20000.0)
-        .Graduation("2019")
+        .mangerId(1)
+        .salary(20000.0)
+        .graduation("2019")
         .expertise(new ArrayList<>())
-        .DOB(calendar.getTime())
+        .dob(calendar.getTime())
         .build();
         Expertise expertise = Expertise.builder()
-        .Name("java")
+        .name("java")
                 .build();
         record.getExpertise().add(expertise);
         this.mockMvc.perform(post("/Employee/")
@@ -65,8 +65,8 @@ public class EmployeeControllerTest {
     }
     @Test
     public void employeeMangerRelationTest() {
-        Employee manger = Employee.builder().FirstName("Manger").LastName("Manger").employees(new ArrayList<>()).build();
-        Employee employee = Employee.builder().FirstName("emp").LastName("emp").build();
+        Employee manger = Employee.builder().firstName("Manger").lastName("Manger").employees(new ArrayList<>()).build();
+        Employee employee = Employee.builder().firstName("emp").lastName("emp").build();
         manger.getEmployees().add(employee);
         employee.setMangerId(manger);
         employeeRepository.save(employee);
@@ -84,19 +84,19 @@ public class EmployeeControllerTest {
         Calendar calendar = Calendar.getInstance();
         calendar.set(1996,5,1);
         EmployeeCommand record = EmployeeCommand.builder()
-                .FirstName("Tasneem")
-                .LastName("Essam")
-                .Gender("Female")
-                .TeamId(1)
+                .firstName("Tasneem")
+                .lastName("Essam")
+                .gender("Female")
+                .teamId(1)
                 .departmentId(1)
-                .MangerId(1)
-                .Salary(20000.0)
-                .Graduation("2019")
+                .mangerId(1)
+                .salary(20000.0)
+                .graduation("2019")
                 .expertise(new ArrayList<>())
-                .DOB(calendar.getTime())
+                .dob(calendar.getTime())
                 .build();
         Expertise expertise = Expertise.builder()
-                .Name("java")
+                .name("java")
                 .build();
         record.getExpertise().add(expertise);
         this.mockMvc.perform(post("/Employee/")
@@ -235,21 +235,21 @@ public class EmployeeControllerTest {
         Calendar calendar = Calendar.getInstance();
         calendar.set(1996,5,1);
         EmployeeEditCommand updateEmployee = EmployeeEditCommand.builder()
-                .Id(4)
-                .FirstName("Ahmed")
-                .LastName("Mohammed")
-                .Gender("Male")
-                .DOB( calendar.getTime())
-                .Graduation("2012")
+                .id(4)
+                .firstName("Ahmed")
+                .lastName("Mohammed")
+                .gender("Male")
+                .dob( calendar.getTime())
+                .graduation("2012")
                 .expertise(new ArrayList<>())
-                .Salary(10000.0)
+                .salary(10000.0)
                 .departmentId(1)
-                .TeamId(1)
+                .teamId(1)
                 .expertise(new ArrayList<>())
-                .MangerId(2)
+                .mangerId(2)
                 .build();
         Expertise expertise = Expertise.builder()
-                .Name("java")
+                .name("java")
                 .build();
         updateEmployee.getExpertise().add(expertise);
         this.mockMvc.perform(put("/Employee/")

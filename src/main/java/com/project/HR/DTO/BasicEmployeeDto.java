@@ -12,13 +12,13 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 public class BasicEmployeeDto {
-    private Integer Id;
-    private String FirstName;
-    private String LastName;
-    private String Gender;
-    private Year Graduation;
+    private Integer id;
+    private String firstName;
+    private String lastName;
+    private String gender;
+    private Year graduation;
     @JsonFormat( pattern = "yyyy-MM-dd")
-    private Date DOB;
-    private double Salary;
+    private Date dob;
+    private double salary;
 
 }

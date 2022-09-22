@@ -18,9 +18,9 @@ import java.util.List;
 public class Team {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer Id;
+    private Integer id;
 
-    private  String Name;
+    private  String name;
 //    @JsonManagedReference
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "Team_Id")

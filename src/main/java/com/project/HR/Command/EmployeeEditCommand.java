@@ -12,17 +12,17 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class EmployeeEditCommand {
-    private Integer Id;
-    private String FirstName;
-    private String LastName;
-    private String Gender;
-    private String Graduation;
+    private Integer id;
+    private String firstName;
+    private String lastName;
+    private String gender;
+    private String graduation;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-    private Date DOB;
-    private double Salary;
+    private Date dob;
+    private double salary;
     private Integer departmentId;
     private List<Expertise> expertise;
-    private Integer TeamId;
-    private Integer MangerId;
+    private Integer teamId;
+    private Integer mangerId;
 
 }

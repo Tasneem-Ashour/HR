@@ -13,12 +13,12 @@ import java.util.Date;
 @AllArgsConstructor
 public class ManagerDto {
 
-    private String FirstName;
-    private String LastName;
-    private String Gender;
-    private String Graduation;
+    private String firstName;
+    private String lastName;
+    private String gender;
+    private String graduation;
     @JsonFormat( pattern = "yyyy-MM-dd")
-    private Date DOB;
-    private double Salary;
-    private Integer TeamId;
+    private Date dob;
+    private double salary;
+    private Integer teamId;
 }

@@ -13,14 +13,14 @@ import java.sql.Date;
 @AllArgsConstructor
 public class EmployeeTeamDto {
 
-    private Integer Id;
-    private String FirstName;
-    private String LastName;
-    private String Gender;
-    private String Graduation;
+    private Integer id;
+    private String firstName;
+    private String lastName;
+    private String gender;
+    private String graduation;
     @JsonFormat( pattern = "yyyy-MM-dd")
-    private Date DOB;
-    private Double Salary;
+    private Date dob;
+    private Double salary;
 
 
 }

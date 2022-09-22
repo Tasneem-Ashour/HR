@@ -16,8 +16,8 @@ import javax.persistence.*;
 public class Expertise {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Integer Id ;
-    String Name ;
+    Integer id;
+    String name;
 //    @ManyToOne
 //    @JoinColumn(name = "Emp_Id" ,referencedColumnName="Id")
 //    private Employee employee;

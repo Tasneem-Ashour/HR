@@ -13,17 +13,17 @@ import java.util.List;
 @AllArgsConstructor
 public class EmployeeDto {
 
-    private String FirstName;
-    private String LastName;
-    private String Gender;
-    private String Graduation;
+    private String firstName;
+    private String lastName;
+    private String gender;
+    private String graduation;
     @JsonFormat( pattern = "yyyy-MM-dd")
-    private Date DOB;
-    private double Salary;
+    private Date dob;
+    private double salary;
     private DepartmentDto department;
     private List<Expertise> expertise;
-    private Integer TeamId;
-    private ManagerDto MangerId;
+    private Integer teamId;
+    private ManagerDto mangerId;
 
 
 
