@@ -1,5 +1,6 @@
 package com.project.HR.Controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.springtestdbunit.DbUnitTestExecutionListener;
 import com.project.HR.Command.EmployeeCommand;
 import com.project.HR.Command.EmployeeEditCommand;
 import com.project.HR.Entity.Employee;
@@ -12,8 +13,10 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.TestExecutionListeners;
+import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
+import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -26,8 +29,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 @SpringBootTest
 @AutoConfigureMockMvc
-@Transactional
+//@Transactional
 @AutoConfigureTestDatabase
+@TestExecutionListeners({
+        DependencyInjectionTestExecutionListener.class,
+        TransactionalTestExecutionListener.class,
+        DbUnitTestExecutionListener.class
+})
 public class EmployeeControllerTest {
     @Autowired
     MockMvc mockMvc;
@@ -82,7 +90,7 @@ public class EmployeeControllerTest {
     @Test
     public void addEmployee_theReturnEmployeeObject() throws Exception {
         Calendar calendar = Calendar.getInstance();
-        calendar.set(1996,5,1);
+        calendar.set(1996,Calendar.JUNE,1);
         EmployeeCommand record = EmployeeCommand.builder()
                 .firstName("Tasneem")
                 .lastName("Essam")
@@ -130,7 +138,7 @@ public class EmployeeControllerTest {
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.firstName", is("tasneem")))
                 .andExpect(jsonPath("$.lastName", is("essam")))
-                .andExpect(jsonPath("$.dob", is("1996-05-31")))
+                .andExpect(jsonPath("$.dob", is("1996-06-01")))
                 .andExpect(jsonPath("$.salary", is(20000.0)))
                 .andExpect(jsonPath("$.gender", is("female")))
                 .andExpect(jsonPath("$.graduation", is("2019")))
@@ -257,8 +265,7 @@ public class EmployeeControllerTest {
                 .accept(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(updateEmployee)))
                 .andExpect(status().isNoContent());
-//                .andExpect(jsonPath("$.firstName",is("Ahmed")))
-//                .andExpect(jsonPath("$.salary", is(10000.0)));
+
     }
     @Test
     public void getAllEmployeeUnderManagerRec_ShouldReturnStatus200() throws Exception {

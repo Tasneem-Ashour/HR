@@ -17,7 +17,7 @@ public class BasicEmployeeDto {
     private String lastName;
     private String gender;
     private Year graduation;
-    @JsonFormat( pattern = "yyyy-MM-dd")
+    @JsonFormat( pattern = "yyyy-MM-dd",timezone = "Africa/Cairo")
     private Date dob;
     private double salary;
 
