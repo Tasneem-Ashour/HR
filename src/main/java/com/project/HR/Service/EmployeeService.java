@@ -54,7 +54,7 @@ public class EmployeeService {
         return employeeDto;
     }
     private boolean isEmployeeHasNoManger() {
-        return employeeRepository.getTopEmployeeManger() != null;
+        return employeeRepository.getTopEmployeeManager() != null;
     }
     private Employee getManager(int manager_Id) {
         if (employeeRepository.findById(manager_Id).isEmpty()) {
