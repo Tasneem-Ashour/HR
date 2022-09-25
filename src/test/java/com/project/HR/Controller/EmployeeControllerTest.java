@@ -163,7 +163,7 @@ public class EmployeeControllerTest {
     @AfterTransaction
     @DatabaseSetup(value = "/dataset/findEmployeeWithIdExist.xml")
     public void geEmployee_shouldReturnNotNull() throws Exception {
-        mockMvc.perform(get("/Employee/2")
+        mockMvc.perform(get("/Employee/1")
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$", notNullValue()));
