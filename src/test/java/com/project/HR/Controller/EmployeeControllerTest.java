@@ -6,20 +6,18 @@ import com.github.springtestdbunit.annotation.ExpectedDatabase;
 import com.github.springtestdbunit.assertion.DatabaseAssertionMode;
 import com.project.HR.Command.EmployeeCommand;
 import com.project.HR.Command.EmployeeEditCommand;
-import com.project.HR.Entity.Employee;
 import com.project.HR.Entity.Expertise;
 import com.project.HR.Repostory.EmployeeRepository;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 import org.springframework.test.context.support.DirtiesContextTestExecutionListener;
-import org.springframework.test.context.transaction.AfterTransaction;
 import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -28,7 +26,6 @@ import java.util.Calendar;
 
 import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -50,6 +47,7 @@ public class EmployeeControllerTest {
     EmployeeRepository employeeRepository;
 
     @Test
+    @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
     @DatabaseSetup(value = "/dataset/addEmployee.xml")
     @ExpectedDatabase(value = "/dataset/expectedAddEmployeeRreturn200.xml", assertionMode= DatabaseAssertionMode.NON_STRICT)
     public void addEmployee_thenReturnStates200() throws Exception {
@@ -78,23 +76,9 @@ public class EmployeeControllerTest {
                 .andExpect(status().isOk());
 
     }
+
     @Test
-    public void employeeMangerRelationTest() {
-        Employee manger = Employee.builder().firstName("Manger").lastName("Manger").employees(new ArrayList<>()).build();
-        Employee employee = Employee.builder().firstName("emp").lastName("emp").build();
-        manger.getEmployees().add(employee);
-        employee.setMangerId(manger);
-        employeeRepository.save(employee);
-        employeeRepository.save(manger);
-        Employee dbEmployee = employeeRepository.findById(employee.getId()).get();
-        Employee dbManger = employeeRepository.findById(manger.getId()).get();
-        Assertions.assertNotNull(dbEmployee);
-        Assertions.assertNotNull(dbEmployee.getMangerId());
-        Assertions.assertNotNull(dbManger);
-        Assertions.assertNull(dbManger.getDepartment());
-        assertTrue(dbManger.getEmployees().size() > 0);
-    }
-    @Test
+    @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
     @DatabaseSetup(value = "/dataset/addEmployee.xml")
     @ExpectedDatabase(value = "/dataset/expectedAddEmployeeRreturnEmployeeObject.xml", assertionMode= DatabaseAssertionMode.NON_STRICT)
     public void addEmployee_theReturnEmployeeObject() throws Exception {
@@ -134,6 +118,7 @@ public class EmployeeControllerTest {
     }
 
     @Test
+    @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
     @DatabaseSetup(value = "/dataset/findEmployeeWithIdExist.xml")
     public void getEmployeeDetailsTest_ShouldReturnStatus200() throws Exception {
         mockMvc.perform(get("/Employee/1")
@@ -142,7 +127,7 @@ public class EmployeeControllerTest {
                 .andExpect(status().isOk());
     }
     @Test
-    @AfterTransaction
+    @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
     @DatabaseSetup(value = "/dataset/findEmployeeWithIdExist.xml")
     public void getEmployeeDetailsTest_ShouldReturnEmployeeObject() throws Exception {
         mockMvc.perform(get("/Employee/1")
@@ -160,7 +145,7 @@ public class EmployeeControllerTest {
     }
 
     @Test
-    @AfterTransaction
+    @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
     @DatabaseSetup(value = "/dataset/findEmployeeWithIdExist.xml")
     public void geEmployee_shouldReturnNotNull() throws Exception {
         mockMvc.perform(get("/Employee/1")
@@ -170,6 +155,7 @@ public class EmployeeControllerTest {
     }
 
     @Test
+    @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
     @DatabaseSetup(value = "/dataset/findEmployeeWithIdExist.xml")
     public void geEmployeeDoneNotExist_shouldException() throws Exception {
 
@@ -179,6 +165,7 @@ public class EmployeeControllerTest {
                 .accept(MediaType.APPLICATION_JSON)));
     }
     @Test
+    @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
     @DatabaseSetup(value = "/dataset/deleteEmployeeWithIdExist.xml")
     public void deleteEmployee_shouldReturn200() throws Exception {
         mockMvc.perform(delete("/Employee/2")
@@ -188,6 +175,7 @@ public class EmployeeControllerTest {
                 .andExpect(jsonPath("$",is("employee 2 delete successfully")));
     }
     @Test
+    @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
     @DatabaseSetup(value = "/dataset/deleteEmployeeWithIdDoesn'tExist.xml")
     public void deleteEmployeeThatNotExist_shouldReturnException() throws Exception {
         assertThrows(org.springframework.web.util.NestedServletException.class,
@@ -198,6 +186,7 @@ public class EmployeeControllerTest {
 
     }
     @Test
+    @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
     @DatabaseSetup(value = "/dataset/deleteEmployeeDoesn'tHaveManager.xml")
     public void deleteEmployeeThatDoesNotHaveManager_shouldReturnException() throws Exception {
                 mockMvc.perform(delete("/Employee/1")
@@ -209,6 +198,7 @@ public class EmployeeControllerTest {
 
     }
     @Test
+    @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
     @DatabaseSetup(value = "/dataset/findAllEmployeeInTeam.xml")
     public void getEmployeesInTeam_ShouldReturnStatus200() throws Exception {
         mockMvc.perform(get("/Employee/team/1")
@@ -218,6 +208,7 @@ public class EmployeeControllerTest {
 
     }
 @Test
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 @DatabaseSetup(value = "/dataset/findAllEmployeeInTeam.xml")
     public void getEmployeesInTeam_ShouldContains4EmployeesWithFirstName() throws Exception {
         mockMvc.perform(get("/Employee/team/1")
@@ -230,6 +221,7 @@ public class EmployeeControllerTest {
     }
 
     @Test
+    @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
     @DatabaseSetup(value = "/dataset/findEmployeesInTeamDoesn'tExist.xml")
     public void getEmployeesInTeamEmpty_ShouldReturnException() throws Exception {
         assertThrows(org.springframework.web.util.NestedServletException.class,
@@ -241,6 +233,7 @@ public class EmployeeControllerTest {
 
     }
     @Test
+    @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
     @DatabaseSetup(value = "/dataset/findEmployeeSalary.xml")
     public void checkEmployeeHasSalaryNetAndGross_shouldBeReturnStatus200() throws Exception {
         mockMvc.perform(get("/Employee/salary/1")
@@ -249,6 +242,7 @@ public class EmployeeControllerTest {
                 .andExpect(status().isOk());
     }
     @Test
+    @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
     @DatabaseSetup(value = "/dataset/findEmployeeGrossSalary.xml")
     public void checkEmployeeHasGrossSalary_shouldBeReturn20000() throws Exception {
         mockMvc.perform(get("/Employee/salary/1")
@@ -257,6 +251,7 @@ public class EmployeeControllerTest {
                 .andExpect(jsonPath("$.gross", is(20000.0)));
     }
     @Test
+    @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
     @DatabaseSetup(value = "/dataset/findEmployeeNetSalary.xml")
     public void checkEmployeeHasNetSalary_whereGrossSalary20000_shouldBeReturn16500() throws Exception {
         mockMvc.perform(get("/Employee/salary/1")
@@ -265,6 +260,7 @@ public class EmployeeControllerTest {
                 .andExpect(jsonPath("$.net", is(16500.0)));
     }
     @Test
+    @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
     @DatabaseSetup(value = "/dataset/NoEmployeeFoundToGetSalary.xml")
     public void checkEmployeeNotFoundToGetHisSalary_shouldBeReturnException() throws Exception {
         assertThrows(org.springframework.web.util.NestedServletException.class,
@@ -275,6 +271,7 @@ public class EmployeeControllerTest {
 
     }
     @Test
+    @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
     @DatabaseSetup(value = "/dataset/editeEmployee.xml")
     @ExpectedDatabase(value = "/dataset/expectedEditeEmployee.xml", assertionMode= DatabaseAssertionMode.NON_STRICT)
     public void updateEmployee_thenReturnStates204() throws Exception {
@@ -306,6 +303,7 @@ public class EmployeeControllerTest {
 
     }
     @Test
+    @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
     @DatabaseSetup(value = "/dataset/findEmployeeUnderMangerRec.xml")
     public void getAllEmployeeUnderManagerRec_ShouldReturnStatus200() throws Exception {
         mockMvc.perform(get("/Employee/employeesUnderManager/1")
@@ -315,6 +313,7 @@ public class EmployeeControllerTest {
     }
 
     @Test
+    @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
     @DatabaseSetup(value = "/dataset/findEmployeeUnderMangerRec.xml")
     public void getAllEmployeeUnderManagerRec_ShouldReturn3EmployeesWithFirstName() throws Exception {
         mockMvc.perform(get("/Employee/employeesUnderManager/1")
@@ -324,6 +323,7 @@ public class EmployeeControllerTest {
                          .andExpect(jsonPath("$[*].firstName",
                           containsInAnyOrder( "Mahmoud","Noura","Ahmed")));    }
     @Test
+    @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
     @DatabaseSetup(value = "/dataset/findEmployeeUnderMangerRec.xml")
     public void getAllEmployeeUnderManagerRec_WhereManagerNotExist_ShouldReturnException() throws Exception {
         assertThrows(org.springframework.web.util.NestedServletException.class,
@@ -334,6 +334,7 @@ public class EmployeeControllerTest {
 
     }
     @Test
+    @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
     @DatabaseSetup(value = "/dataset/findEmployeesUnderDirectlyManger.xml")
     public void getAllEmployeeUnderDirectlyManager_ShouldReturnStatus200() throws Exception {
         mockMvc.perform(get("/Employee/manager/2")
@@ -344,6 +345,7 @@ public class EmployeeControllerTest {
     }
 
     @Test
+    @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
     @DatabaseSetup(value = "/dataset/findEmployeesUnderDirectlyManger.xml")
     public void getAllEmployeeUnderDirectlyManager_ShouldReturn2EmployeeWithCheckedFirstName() throws Exception {
         mockMvc.perform(get("/Employee/manager/2")
@@ -354,6 +356,7 @@ public class EmployeeControllerTest {
                         containsInAnyOrder("Noura","Ahmed")));
     }
     @Test
+    @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
     @DatabaseSetup(value = "/dataset/findEmployeesUnderDirectlyManger.xml")
     public void getAllEmployeeUnderDirectlyManager_WhereManagerNotExist_ShouldReturnException() throws Exception {
         assertThrows(org.springframework.web.util.NestedServletException.class,
