@@ -53,21 +53,21 @@ public class EmployeeControllerTest {
     @ExpectedDatabase(value = "/dataset/expectedAddEmployeeRreturn200.xml" , assertionMode= DatabaseAssertionMode.NON_STRICT)
     public void addEmployee_thenReturnStates200() throws Exception {
         Calendar calendar = Calendar.getInstance();
-        calendar.set(1996,5,1);
+        calendar.set(1996,Calendar.JUNE,1);
         EmployeeCommand record = EmployeeCommand.builder()
-        .firstName("tasneem")
-        .lastName("essam")
-        .gender("female")
-        .teamId(10)
-        .departmentId(10)
-        .mangerId(10)
-        .salary(20000.0)
-        .graduation("2019")
-        .expertise(new ArrayList<>())
-        .dob(calendar.getTime())
-        .build();
+                .firstName("Hady")
+                .lastName("Alex")
+                .gender("male")
+                .teamId(10)
+                .departmentId(10)
+                .mangerId(11)
+                .salary(20000.0)
+                .graduation("2020")
+                .expertise(new ArrayList<>())
+                .dob(calendar.getTime())
+                .build();
         Expertise expertise = Expertise.builder()
-        .name("java")
+                .name("java")
                 .build();
         record.getExpertise().add(expertise);
         this.mockMvc.perform(post("/Employee/")
@@ -85,14 +85,14 @@ public class EmployeeControllerTest {
         Calendar calendar = Calendar.getInstance();
         calendar.set(1996,Calendar.JUNE,1);
         EmployeeCommand record = EmployeeCommand.builder()
-                .firstName("tasneem")
-                .lastName("essam")
-                .gender("female")
+                .firstName("Hady")
+                .lastName("Alex")
+                .gender("male")
                 .teamId(10)
                 .departmentId(10)
-                .mangerId(12)
+                .mangerId(11)
                 .salary(20000.0)
-                .graduation("2019")
+                .graduation("2020")
                 .expertise(new ArrayList<>())
                 .dob(calendar.getTime())
                 .build();
@@ -104,13 +104,12 @@ public class EmployeeControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(record)))
-//                .andExpect(jsonPath("$.mangerId", is(12)))
-                .andExpect(jsonPath("$.firstName", is("tasneem")))
-                .andExpect(jsonPath("$.lastName", is("essam")))
+                .andExpect(jsonPath("$.firstName", is("Hady")))
+                .andExpect(jsonPath("$.lastName", is("Alex")))
                 .andExpect(jsonPath("$.dob", is("1996-06-01")))
                 .andExpect(jsonPath("$.salary", is(20000.0)))
-                .andExpect(jsonPath("$.gender", is("female")))
-                .andExpect(jsonPath("$.graduation", is("2019")))
+                .andExpect(jsonPath("$.gender", is("male")))
+                .andExpect(jsonPath("$.graduation", is("2020")))
                 .andExpect(jsonPath("$.teamId", is(10)))
                 .andExpect(jsonPath("$.expertise.length()", is(1)))
                 .andExpect(jsonPath("$.expertise", hasSize(1)))
@@ -283,8 +282,8 @@ public class EmployeeControllerTest {
                 .salary(10000.0)
                 .departmentId(3000)
                 .teamId(3000)
-                .expertise(new ArrayList<>())
                 .mangerId(3000)
+                .expertise(new ArrayList<>())
                 .build();
         Expertise expertise = Expertise.builder()
                 .name("java")
