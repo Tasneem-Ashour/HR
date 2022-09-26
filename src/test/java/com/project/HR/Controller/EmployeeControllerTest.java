@@ -164,6 +164,7 @@ public class EmployeeControllerTest {
     }
     @Test
     @DatabaseSetup(value = "/dataset/deleteEmployeeWithIdExist.xml")
+    @ExpectedDatabase(value = "/dataset/expectedDeleteEmployeeWithIdExist.xml", assertionMode= DatabaseAssertionMode.NON_STRICT)
     public void deleteEmployee_shouldReturn204() throws Exception {
         mockMvc.perform(delete("/Employee/201")
                 .contentType(MediaType.APPLICATION_JSON)
