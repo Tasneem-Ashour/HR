@@ -36,7 +36,7 @@ public class EmployeeService {
     DepartmentRepository departmentRepository;
 
     public EmployeeDto addEmployee(EmployeeCommand employeeCommand) throws Exception {
-        if (employeeCommand.getMangerId() == null && isEmployeeHasNoManger()) {
+        if (employeeCommand.getManager() == null && isEmployeeHasNoManger()) {
             throw new Exception("Manager Id can not be null");
         }
         Employee employee = employeeConverter.convertCommandToEntity(employeeCommand);
@@ -44,12 +44,12 @@ public class EmployeeService {
         employee.setDepartment(department);
         Team team = teamRepository.findById(employeeCommand.getTeamId()).get();
         employee.setTeam(team);
-        Employee manger = getManager(employeeCommand.getMangerId());
-        employee.setMangerId(manger);
+        Employee manger = getManager(employeeCommand.getManager());
+        employee.setManager(manger);
         employee.setExpertise(employeeCommand.getExpertise());
         employee = employeeRepository.save(employee);
         var employeeDto = employeeConverter.covertEntityToDTO(employee);
-        employeeDto.setMangerId(employeeConverter.covertEntityEmployeeToDTO(employee.getMangerId()));
+        employeeDto.setManager(employeeConverter.covertEntityEmployeeToDTO(employee.getManager()));
         employeeDto.setDepartment(departmentConverter.covertEntityToDTO(department));
         return employeeDto;
     }
@@ -77,12 +77,12 @@ public class EmployeeService {
     }
     public String deleteEmployee(int id) {
         Employee employee = employeeRepository.findById(id).get();
-        Employee manager = employee.getMangerId();
+        Employee manager = employee.getManager();
         if (manager == null) {
             return "Can not delete employee";
         }
         var subEmployees = employeeRepository.getEmployeesByManagerId(manager.getId());
-        subEmployees.forEach(e -> e.setMangerId(manager));
+        subEmployees.forEach(e -> e.setManager(manager));
         employeeRepository.saveAll(subEmployees);
         employeeRepository.deleteById(id);
         return String.format("employee %s delete successfully", id);
@@ -111,8 +111,8 @@ public class EmployeeService {
         employee.setTeam(team);
         Department department = departmentRepository.findById(employeeEditCommand.getDepartmentId()).get();
         employee.setDepartment(department);
-        Employee manager = employeeRepository.findById(employeeEditCommand.getMangerId()).get();
-        employee.setMangerId(manager);
+        Employee manager = employeeRepository.findById(employeeEditCommand.getManager()).get();
+        employee.setManager(manager);
         employeeRepository.save(employee);
     }
     public List<BasicEmployeeDto> getSubEmloyeesRec(int managerId) throws Exception {

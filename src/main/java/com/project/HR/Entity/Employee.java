@@ -34,8 +34,8 @@ public class Employee {
     private Team team;
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "manager_Id")
-    private Employee mangerId;
-    @OneToMany(mappedBy = "mangerId")
+    private Employee manager;
+    @OneToMany(mappedBy = "manager")
     private List<Employee> employees = new ArrayList<>();
 //    @OneToMany(cascade = CascadeType.ALL)
 //    @JoinColumn(name = "emp_Id")

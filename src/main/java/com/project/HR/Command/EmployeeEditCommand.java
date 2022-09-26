@@ -23,6 +23,6 @@ public class EmployeeEditCommand {
     private Integer departmentId;
     private List<Expertise> expertise;
     private Integer teamId;
-    private Integer mangerId;
+    private Integer manager;
 
 }

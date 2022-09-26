@@ -22,7 +22,7 @@ public class EmployeeDto {
     private DepartmentDto department;
     private List<Expertise> expertise;
     private Integer teamId;
-    private ManagerDto mangerId;
+    private ManagerDto manager;
 
 
 
