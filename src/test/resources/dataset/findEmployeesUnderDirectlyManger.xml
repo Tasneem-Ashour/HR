@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataset>
-    <department  name="dept1"/>
-    <team  name="team1"/>
-    <employee   first_name='tasneem' last_name='essam' salary='20000' dob='1996-6-1' graduation='2019' gender='female' team_id='1' dept_id='1'/>
-    <employee  first_name='Mahmoud' last_name='ELmassry' salary='30000' dob='1989-10-1' graduation='2009' gender='male' team_id='1' dept_id='1' manager_id='1'></employee>
-    <employee  first_name='Noura' last_name='Hassan' salary='15000' dob='1996-7-1' graduation='2019' gender='female' team_id='1' dept_id='1' manager_id='2'></employee>
-    <employee   first_name='Ahmed' last_name='Mohammed' salary='7000' dob='1996-6-1' graduation='2019' gender='male' team_id='1' dept_id='1' manager_id='2'></employee>
+    <department id="5000" name="dept1"/>
+    <team id="5000" name="team1"/>
+    <employee id="5000"  first_name='tasneem' last_name='essam' salary='20000' dob='1996-6-1' graduation='2019' gender='female' team_id='5000' dept_id='5000'/>
+    <employee id="5001" first_name='Mahmoud' last_name='ELmassry' salary='30000' dob='1989-10-1' graduation='2009' gender='male' team_id='5000' dept_id='5000' manager_id='5000'></employee>
+    <employee id="5002" first_name='Noura' last_name='Hassan' salary='15000' dob='1996-7-1' graduation='2019' gender='female' team_id='5000' dept_id='5000' manager_id='5001'></employee>
+    <employee id="5003"  first_name='Ahmed' last_name='Mohammed' salary='7000' dob='1996-6-1' graduation='2019' gender='male' team_id='5000' dept_id='5000' manager_id='5001'></employee>
 </dataset>

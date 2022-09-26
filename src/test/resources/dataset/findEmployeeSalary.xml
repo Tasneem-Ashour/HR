@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataset>
-    <department  name="dept1"/>
-    <team  name="team1"/>
-    <employee  first_name='tasneem' last_name='essam' salary='20000' dob='1996-6-1' graduation='2019' gender='female' team_id='1' dept_id='1'/>
+    <department id="900" name="dept1"/>
+    <team id="900" name="team1"/>
+    <employee id="900" first_name='tasneem' last_name='essam' salary='20000' dob='1996-6-1' graduation='2019' gender='female' team_id='900' dept_id='900'/>
 
 </dataset>

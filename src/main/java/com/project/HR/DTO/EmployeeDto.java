@@ -12,7 +12,6 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class EmployeeDto {
-
     private String firstName;
     private String lastName;
     private String gender;

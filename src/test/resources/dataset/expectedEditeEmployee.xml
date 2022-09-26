@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataset>
 
-    <employee  first_name='tasneem' last_name='essam' salary='20000' dob='1996-6-1' graduation='2019' gender='female' team_id='1' dept_id='1'/>
-    <employee  first_name='Mahmoud' last_name='ELmassry' salary='30000' dob='1989-10-1' graduation='2009' gender='male' team_id='1' dept_id='1' manager_id='1'></employee>
-    <employee   first_name='Ahmed' last_name='Mohammed' salary='10000.0' dob='1996-6-1' graduation='2012' gender='Male' team_id='1' dept_id='1' manager_id='2'></employee>
+    <employee  first_name='tasneem' last_name='essam' salary='20000' dob='1996-6-1' graduation='2019' gender='female' team_id='3000' dept_id='3000'/>
+    <employee  first_name='Mahmoud' last_name='ELmassry' salary='30000' dob='1989-10-1' graduation='2009' gender='male' team_id='3000' dept_id='3000' manager_id='3000'></employee>
+    <employee   first_name='Ahmed' last_name='Mohammed' salary='10000.0' dob='1996-6-1' graduation='2012' gender='Male' team_id='3000' dept_id='3000' manager_id='3000'></employee>
 
-    <expertise  name="java" emp_id="4"></expertise>
+    <expertise  name="java" ></expertise>
 </dataset>
