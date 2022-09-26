@@ -37,17 +37,5 @@ public class Employee {
     private Employee manager;
     @OneToMany(mappedBy = "manager")
     private List<Employee> employees = new ArrayList<>();
-//    @OneToMany(cascade = CascadeType.ALL)
-//    @JoinColumn(name = "emp_Id")
-//    private List<Leave> leave = new ArrayList<>();
-//    @OneToMany(cascade = CascadeType.ALL)
-//    @JoinColumn(name = "emp_Id")
-//    private List<Raise> raise = new ArrayList<>();
-//    @OneToMany(cascade = CascadeType.ALL)
-//    @JoinColumn(name = "emp_Id")
-//    private List<Bonus> bonus = new ArrayList<>();
-//    private Date hiringDate;
-//    @Column(unique=true)
-//    private String nationalId ;
-//    private String degree;
+
 }

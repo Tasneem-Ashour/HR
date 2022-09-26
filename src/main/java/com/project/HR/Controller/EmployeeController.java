@@ -34,8 +34,9 @@ public class EmployeeController {
         return ResponseEntity.ok(output);
     }
     @DeleteMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public String deleteEmployee(@PathVariable int id) {
-        return employeeService.deleteEmployee(id);
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    public void deleteEmployee(@PathVariable int id) throws Exception {
+         employeeService.deleteEmployee(id);
     }
     @GetMapping(path = "/team/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<EmployeeTeamDto> getAllEmployeesInTeam(@PathVariable int id) throws Exception {

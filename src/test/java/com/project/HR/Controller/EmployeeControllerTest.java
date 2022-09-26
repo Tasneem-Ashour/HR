@@ -164,12 +164,11 @@ public class EmployeeControllerTest {
     }
     @Test
     @DatabaseSetup(value = "/dataset/deleteEmployeeWithIdExist.xml")
-    public void deleteEmployee_shouldReturn200() throws Exception {
+    public void deleteEmployee_shouldReturn204() throws Exception {
         mockMvc.perform(delete("/Employee/201")
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$",is("employee 201 delete successfully")));
+                .andExpect(status().isNoContent());
     }
     @Test
     @DatabaseSetup(value = "/dataset/deleteEmployeeWithIdDoesn'tExist.xml")
@@ -185,10 +184,13 @@ public class EmployeeControllerTest {
     @Test
     @DatabaseSetup(value = "/dataset/deleteEmployeeDoesn'tHaveManager.xml")
     public void deleteEmployeeThatDoesNotHaveManager_shouldReturnException() throws Exception {
-                mockMvc.perform(delete("/Employee/300")
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .accept(MediaType.APPLICATION_JSON))
-                                 .andExpect(jsonPath("$",is("Can not delete employee")));
+
+        assertThrows(org.springframework.web.util.NestedServletException.class,
+                ()-> mockMvc.perform(delete("/Employee/300")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+        );
+
 
 
 

@@ -54,7 +54,7 @@ public class EmployeeService {
         return employeeDto;
     }
     private boolean isEmployeeHasNoManger() {
-        return employeeRepository.getTopEmployeeManager() != null;
+        return employeeRepository.getTopEmployeeManager() !=null;
     }
     private Employee getManager(int manager_Id) {
         if (employeeRepository.findById(manager_Id).isEmpty()) {
@@ -75,17 +75,16 @@ public class EmployeeService {
 
         return employeeDto;
     }
-    public String deleteEmployee(int id) {
+    public void deleteEmployee(int id) throws Exception {
         Employee employee = employeeRepository.findById(id).get();
         Employee manager = employee.getManager();
         if (manager == null) {
-            return "Can not delete employee";
+            throw new Exception( "Can not delete employee");
         }
-        var subEmployees = employeeRepository.getEmployeesByManagerId(manager.getId());
-        subEmployees.forEach(e -> e.setManager(manager));
+        var subEmployees = employeeRepository.getEmployee_ManagerId(manager.getId());
+        subEmployees.forEach(e -> e.setManager(manager.getManager()));
         employeeRepository.saveAll(subEmployees);
         employeeRepository.deleteById(id);
-        return String.format("employee %s delete successfully", id);
     }
     public List<EmployeeTeamDto> getEmployeesInTeam(int id) throws Exception {
         if (teamRepository.findById(id).isEmpty()) {

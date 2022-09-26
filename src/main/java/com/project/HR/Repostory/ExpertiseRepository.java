@@ -13,5 +13,5 @@ import org.springframework.transaction.annotation.Transactional;
 public interface ExpertiseRepository extends JpaRepository<Expertise,Integer> {
     @Modifying
     @Query("Delete from Expertise where Emp_Id = :empId")
-    public void deleteExpertisesByEmpId(@Param("empId") int empId);
+    void deleteExpertisesByEmpId(@Param("empId") int empId);
 }
