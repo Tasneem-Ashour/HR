@@ -37,5 +37,8 @@ public class Employee {
     private Employee manager;
     @OneToMany(mappedBy = "manager")
     private List<Employee> employees = new ArrayList<>();
-
+    @Column(unique = true)
+    private String nationalId;
+    private Integer experience;
+    private String degree ;
 }

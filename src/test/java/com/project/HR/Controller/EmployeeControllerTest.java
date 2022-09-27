@@ -54,6 +54,7 @@ public class EmployeeControllerTest {
     public void addEmployee_thenReturnStates200() throws Exception {
         Calendar calendar = Calendar.getInstance();
         calendar.set(1996,Calendar.JUNE,1);
+//        LocalDate date = LocalDate.of(10)
         EmployeeCommand record = EmployeeCommand.builder()
                 .firstName("Hady")
                 .lastName("Alex")
@@ -65,6 +66,9 @@ public class EmployeeControllerTest {
                 .graduation("2020")
                 .expertise(new ArrayList<>())
                 .dob(calendar.getTime())
+                .degree("senior")
+                .experience(10)
+                .nationalId("123450789")
                 .build();
         Expertise expertise = Expertise.builder()
                 .name("java")
@@ -95,6 +99,9 @@ public class EmployeeControllerTest {
                 .graduation("2020")
                 .expertise(new ArrayList<>())
                 .dob(calendar.getTime())
+                .degree("senior")
+                .experience(10)
+                .nationalId("123450789")
                 .build();
         Expertise expertise = Expertise.builder()
                 .name("java")
@@ -113,7 +120,11 @@ public class EmployeeControllerTest {
                 .andExpect(jsonPath("$.teamId", is(10)))
                 .andExpect(jsonPath("$.expertise.length()", is(1)))
                 .andExpect(jsonPath("$.expertise", hasSize(1)))
-                .andExpect(jsonPath("$.department.length()", is(2)));
+                .andExpect(jsonPath("$.department.length()", is(2)))
+                .andExpect(jsonPath("$.degree", is ("senior")))
+                .andExpect(jsonPath("$.experience", is(10)))
+                .andExpect(jsonPath("$.nationalId", is("123450789")));
+
 
     }
 //start from 100
@@ -139,7 +150,10 @@ public class EmployeeControllerTest {
                 .andExpect(jsonPath("$.gender", is("female")))
                 .andExpect(jsonPath("$.graduation", is("2019")))
                 .andExpect(jsonPath("$.teamId", is(100)))
-                .andExpect(jsonPath("$.department.length()", is(2)));
+                .andExpect(jsonPath("$.department.length()", is(2)))
+                .andExpect(jsonPath("$.degree", is ("senior")))
+                .andExpect(jsonPath("$.experience", is(10)))
+                .andExpect(jsonPath("$.nationalId", is("123456789")));
 
     }
 
@@ -197,7 +211,6 @@ public class EmployeeControllerTest {
 
     }
     @Test
-    
     @DatabaseSetup(value = "/dataset/findAllEmployeeInTeam.xml")
     public void getEmployeesInTeam_ShouldReturnStatus200() throws Exception {
         mockMvc.perform(get("/Employee/team/1000")
@@ -287,6 +300,9 @@ public class EmployeeControllerTest {
                 .teamId(3000)
                 .manager(3000)
                 .expertise(new ArrayList<>())
+                .degree("senior")
+                .experience(10)
+                .nationalId("123056789")
                 .build();
         Expertise expertise = Expertise.builder()
                 .name("java")
