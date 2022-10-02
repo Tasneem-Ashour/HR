@@ -12,13 +12,13 @@ CREATE TABLE  `team` (
 
 CREATE TABLE `employee`(
   `id` int NOT NULL auto_increment,
-  `first_name` varchar(255) DEFAULT NULL,
-  `last_name` varchar(255) DEFAULT NULL,
-  `salary` varchar(255) DEFAULT NULL,
-  `dob` date DEFAULT NULL,
+  `first_name` varchar(255) not NULL,
+  `last_name` varchar(255) not NULL,
+  `salary` varchar(255) not NULL,
+  `dob` date not NULL,
   `graduation` varchar(4),
   `dept_id` int DEFAULT NULL,
-  `gender` varchar(255) DEFAULT NULL,
+  `gender` varchar(255) not NULL,
   `team_id` int DEFAULT NULL,
   `manager_id` int DEFAULT NULL,
   PRIMARY KEY (`id`),
