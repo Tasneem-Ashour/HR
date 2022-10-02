@@ -2,6 +2,7 @@ package com.project.HR.Service;
 import com.project.HR.Command.RaisesCommand;
 import com.project.HR.Converter.RaisesConvertor;
 import com.project.HR.DTO.RaisesDto;
+import com.project.HR.Entity.Employee;
 import com.project.HR.Entity.Raises;
 import com.project.HR.Repostory.EmployeeRepository;
 import com.project.HR.Repostory.RaisesRepository;
@@ -29,7 +30,10 @@ public class RaisesService {
         }
         Raises raises = raisesConvertor.convertCommandToEntity(raisesCommand);
         raisesRepository.save(raises);
+        Employee employee = employeeRepository.findById(raisesCommand.getEmp_id()).get();
+        Double newSalary = employee.getSalary() + (raises.getAmount() * employee.getSalary());
+        employee.setSalary(newSalary);
+        employeeRepository.save(employee);
         return raisesConvertor.convertEntityToDto(raises);
     }
-
 }
