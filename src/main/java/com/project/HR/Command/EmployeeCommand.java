@@ -1,5 +1,4 @@
 package com.project.HR.Command;
-
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.project.HR.Entity.Expertise;
 import lombok.*;
@@ -26,6 +25,9 @@ public class EmployeeCommand {
     private List<Expertise> expertise;
     private Integer teamId;
     private Integer manager;
+    private String nationalId;
+    private Integer experience;
+    private String degree ;
 
 
 }

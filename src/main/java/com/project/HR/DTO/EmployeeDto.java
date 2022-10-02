@@ -23,6 +23,9 @@ public class EmployeeDto {
     private List<Expertise> expertise;
     private Integer teamId;
     private ManagerDto manager;
+    private String nationalId;
+    private Integer experience;
+    private String degree ;
 
 
 

@@ -21,6 +21,8 @@ public class EmployeeTeamDto {
     @JsonFormat( pattern = "yyyy-MM-dd",timezone = "Africa/Cairo")
     private Date dob;
     private Double salary;
-
+    private String nationalId;
+    private Integer experience;
+    private String degree ;
 
 }

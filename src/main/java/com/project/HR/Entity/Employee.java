@@ -1,6 +1,5 @@
 package com.project.HR.Entity;
 import lombok.*;
-
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Date;
@@ -37,5 +36,17 @@ public class Employee {
     private Employee manager;
     @OneToMany(mappedBy = "manager")
     private List<Employee> employees = new ArrayList<>();
-
+    @Column(unique = true)
+    private String nationalId;
+    private Integer experience;
+    private String degree;
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "emp_id" , referencedColumnName = "id")
+    private List<Leave> leaves = new ArrayList<>();
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "emp_id" , referencedColumnName = "id")
+    private List<Bonus> bonus = new ArrayList<>();
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "emp_id" , referencedColumnName = "id")
+    private List<Raises> raises = new ArrayList<>();
 }
