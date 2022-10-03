@@ -1,0 +1,10 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dataset>
+    <department id="10" name='dept1'/>
+    <team id="10" name='team1'/>
+    <employee id="1" first_name='tasneem' last_name='essam' salary='20000' dob='1996-6-1' graduation='2019' gender='female' team_id='10' dept_id='10' national_id="123456789" experience="10" degree="senior" hiringDate="2020-01-01" />
+<bonus id="1" amount="1000.0" emp_id="1" bonusDate="2022-10-03"></bonus>
+
+
+
+</dataset>
