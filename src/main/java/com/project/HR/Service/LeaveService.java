@@ -9,6 +9,7 @@ import com.project.HR.Repostory.LeaveRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +21,24 @@ public class LeaveService {
     LeaveConverter leaveConverter;
     @Autowired
     EmployeeRepository employeeRepository;
+    private static int getWorkingDaysInInterval(LocalDate from, LocalDate to) {
+        int workingDays = 0;
+        while (from.compareTo(to) != 0) {
+            if (from.getDayOfWeek() != DayOfWeek.FRIDAY && from.getDayOfWeek() != DayOfWeek.SATURDAY) {
+                workingDays++;
+            }
+            from = from.plusDays(1);
+        }
+        return workingDays;
+    }
+    public int getNumberOfLeavesDays(LocalDate date, int emp_id) throws Exception {
+        List<LeaveDto> listLeaves = getEmployeeLeavesByDate(date, emp_id);
+        int totalLeaves = 0;
+        for (LeaveDto l : listLeaves) {
+            totalLeaves += getWorkingDaysInInterval(l.getFromDate(), l.getToDate());
+        }
+        return totalLeaves;
+    }
     public LeaveDto getEmployeeLeaves(int id) {
         Leaves leaves = leaveRepository.findById(id).get();
         LeaveDto leaveDto = leaveConverter.convertEntityToDto(leaves);
@@ -35,8 +54,8 @@ public class LeaveService {
         leaveRepository.save(leaves);
         return leaveConverter.convertEntityToDto(leaves);
     }
-    public List<LeaveDto> getEmployeeLeavesByDate(LocalDate date) throws Exception {
-        List<Leaves> x = leaveRepository.getLeavesByDate(date);
+    public List<LeaveDto> getEmployeeLeavesByDate(LocalDate date, int emp_id) throws Exception {
+        List<Leaves> x = leaveRepository.getLeavesByDate(date, emp_id);
         List<LeaveDto> leaveDto = new ArrayList<>();
         x.forEach(e -> leaveDto.add(leaveConverter.convertEntityToDto(e)));
         return leaveDto;

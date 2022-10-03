@@ -7,6 +7,10 @@ import com.project.HR.Repostory.BonusRepository;
 import com.project.HR.Repostory.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 @Service
 public class BonusService {
     @Autowired
@@ -33,4 +37,20 @@ public class BonusService {
         return bonusConvertor.convertEntityToDto(bonus);
     }
 
+    public List<BonusDto> getEmployeeBonusByDateAndEmployeeId(LocalDate date , int emp_id) throws Exception {
+        List<Bonus> x = bonusRepository.getBonusByDateAndEmployeeId(date,emp_id);
+        List<BonusDto> bonusDto = new ArrayList<>();
+        x.forEach(e -> bonusDto.add(bonusConvertor.convertEntityToDto(e)));
+        return bonusDto;
+    }
+
+
+    public double getEmployeeBonusValueByDateAndEmployeeId(LocalDate date, int emp_id) throws Exception {
+        List<BonusDto> bonusDto = getEmployeeBonusByDateAndEmployeeId(date, emp_id);
+        double sum = 0;
+        for (BonusDto r : bonusDto) {
+            sum += r.getAmount();
+        }
+        return sum;
+    }
 }

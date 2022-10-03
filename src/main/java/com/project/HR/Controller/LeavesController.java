@@ -26,8 +26,8 @@ public class LeavesController {
 
     @GetMapping(path = "/local-Date" , produces = MediaType.APPLICATION_JSON_VALUE)
     public List<LeaveDto> listOfLeaves (@RequestParam("localDate")
-                                   @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate localDate) throws Exception {
-        return  leaveService.getEmployeeLeavesByDate(localDate);
+                                   @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate localDate ,@RequestParam("emp_id") int emp_id) throws Exception {
+        return  leaveService.getEmployeeLeavesByDate(localDate,emp_id);
     }
 
     @GetMapping(path = "/{id}" , produces = MediaType.APPLICATION_JSON_VALUE )

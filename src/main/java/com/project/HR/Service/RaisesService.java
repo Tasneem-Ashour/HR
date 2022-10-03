@@ -9,6 +9,7 @@ import com.project.HR.Repostory.RaisesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 @Service
@@ -45,5 +46,19 @@ public class RaisesService {
         List<RaisesDto> raisesDto = new ArrayList<>();
         raises.forEach(raises1 -> raisesDto.add(raisesConvertor.convertEntityToDto(raises1)));
         return raisesDto;
+    }
+    public List<RaisesDto> getEmployeeRaisesByDateAndEmployeeId(LocalDate date, int emp_id) throws Exception {
+        List<Raises> x = raisesRepository.getRaisesByDateAndEmployeeId(date, emp_id);
+        List<RaisesDto> raisesDto = new ArrayList<>();
+        x.forEach(e -> raisesDto.add(raisesConvertor.convertEntityToDto(e)));
+        return raisesDto;
+    }
+    public double getEmployeeRaisesValueByDateAndEmployeeId(LocalDate date, int emp_id) throws Exception {
+        List<RaisesDto> raisesDto = getEmployeeRaisesByDateAndEmployeeId(date, emp_id);
+        double sum = 0;
+        for (RaisesDto r : raisesDto) {
+            sum += r.getAmount();
+        }
+        return sum;
     }
 }
