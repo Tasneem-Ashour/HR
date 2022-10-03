@@ -8,6 +8,9 @@ import com.project.HR.Repostory.EmployeeRepository;
 import com.project.HR.Repostory.RaisesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 @Service
 public class RaisesService {
     @Autowired
@@ -35,5 +38,12 @@ public class RaisesService {
         employee.setSalary(newSalary);
         employeeRepository.save(employee);
         return raisesConvertor.convertEntityToDto(raises);
+    }
+    public List<RaisesDto> getAllEmployeeRaises(String nationalId) {
+        Employee employee = employeeRepository.getEmployeeByNationalId(nationalId);
+        var raises = raisesRepository.getEmployeeRaisesByNationalId(employee.getId());
+        List<RaisesDto> raisesDto = new ArrayList<>();
+        raises.forEach(raises1 -> raisesDto.add(raisesConvertor.convertEntityToDto(raises1)));
+        return raisesDto;
     }
 }

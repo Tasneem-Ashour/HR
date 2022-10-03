@@ -14,4 +14,11 @@ public interface EmployeeRepository extends JpaRepository<Employee, Integer> {
     Employee getTopEmployeeManager();
     @Query("select u from Employee u where u.manager.id =:x")
     List<Employee> getEmployee_ManagerId(@Param("x") int manager);
+
+    @Query("select u from Employee u Where u.nationalId =:n")
+    Employee getEmployeeByNationalId(@Param("n") String nationalId);
+
+
+
+
 }

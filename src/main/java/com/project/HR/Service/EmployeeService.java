@@ -8,10 +8,7 @@ import com.project.HR.Entity.Department;
 import com.project.HR.Entity.Employee;
 import com.project.HR.Entity.Expertise;
 import com.project.HR.Entity.Team;
-import com.project.HR.Repostory.DepartmentRepository;
-import com.project.HR.Repostory.EmployeeRepository;
-import com.project.HR.Repostory.ExpertiseRepository;
-import com.project.HR.Repostory.TeamRepository;
+import com.project.HR.Repostory.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,10 +32,14 @@ public class EmployeeService {
     @Autowired
     DepartmentRepository departmentRepository;
 
+    @Autowired
+    LeaveRepository leaveRepository;
+
     public EmployeeDto addEmployee(EmployeeCommand employeeCommand) throws Exception {
         if (employeeCommand.getManager() == null && isEmployeeHasNoManger()) {
             throw new Exception("Manager Id can not be null");
         }
+
         Employee employee = employeeConverter.convertCommandToEntity(employeeCommand);
         Department department = departmentRepository.findById(employeeCommand.getDepartmentId()).get();
         employee.setDepartment(department);
@@ -47,6 +48,7 @@ public class EmployeeService {
         Employee manger = getManager(employeeCommand.getManager());
         employee.setManager(manger);
         employee.setExpertise(employeeCommand.getExpertise());
+        employee.setHiringDate(employeeCommand.getHiringDate());
         employee = employeeRepository.save(employee);
         var employeeDto = employeeConverter.covertEntityToDTO(employee);
         employeeDto.setManager(employeeConverter.covertEntityEmployeeToDTO(employee.getManager()));
@@ -84,6 +86,10 @@ public class EmployeeService {
         var subEmployees = employeeRepository.getEmployee_ManagerId(manager.getId());
         subEmployees.forEach(e -> e.setManager(manager.getManager()));
         employeeRepository.saveAll(subEmployees);
+
+//        var leaves = leaveRepository.getAllEmployeeLeaves(employee.getId());
+//        leaveRepository.deleteAll(leaves);
+
         employeeRepository.deleteById(id);
     }
     public List<EmployeeTeamDto> getEmployeesInTeam(int id) throws Exception {

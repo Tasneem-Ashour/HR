@@ -21,6 +21,7 @@ import org.springframework.test.context.transaction.TransactionalTestExecutionLi
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -32,7 +33,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @Transactional
-
 @AutoConfigureTestDatabase
 @TestExecutionListeners({
         DependencyInjectionTestExecutionListener.class,
@@ -54,7 +54,7 @@ public class EmployeeControllerTest {
     public void addEmployee_thenReturnStates200() throws Exception {
         Calendar calendar = Calendar.getInstance();
         calendar.set(1996,Calendar.JUNE,1);
-//        LocalDate date = LocalDate.of(10)
+        LocalDate date = LocalDate.of(2020,01,01);
         EmployeeCommand record = EmployeeCommand.builder()
                 .firstName("Hady")
                 .lastName("Alex")
@@ -69,6 +69,7 @@ public class EmployeeControllerTest {
                 .degree("senior")
                 .experience(10)
                 .nationalId("123450789")
+                .hiringDate(date)
                 .build();
         Expertise expertise = Expertise.builder()
                 .name("java")
@@ -88,6 +89,8 @@ public class EmployeeControllerTest {
     public void addEmployee_theReturnEmployeeObject() throws Exception {
         Calendar calendar = Calendar.getInstance();
         calendar.set(1996,Calendar.JUNE,1);
+        LocalDate date = LocalDate.of(2020,01,01);
+
         EmployeeCommand record = EmployeeCommand.builder()
                 .firstName("Hady")
                 .lastName("Alex")
@@ -102,6 +105,7 @@ public class EmployeeControllerTest {
                 .degree("senior")
                 .experience(10)
                 .nationalId("123450789")
+                .hiringDate(date)
                 .build();
         Expertise expertise = Expertise.builder()
                 .name("java")
@@ -124,6 +128,8 @@ public class EmployeeControllerTest {
                 .andExpect(jsonPath("$.degree", is ("senior")))
                 .andExpect(jsonPath("$.experience", is(10)))
                 .andExpect(jsonPath("$.nationalId", is("123450789")));
+//                .andExpect(jsonPath("$.hiringdate", is("2020-01-01")));
+
 
 
     }
@@ -154,6 +160,7 @@ public class EmployeeControllerTest {
                 .andExpect(jsonPath("$.degree", is ("senior")))
                 .andExpect(jsonPath("$.experience", is(10)))
                 .andExpect(jsonPath("$.nationalId", is("123456789")));
+//                .andExpect(jsonPath("$.hiringDate",is("2020-01-01")));
 
     }
 

@@ -2,8 +2,8 @@
 <dataset>
     <department id="3000" name="dept1"/>
     <team id="3000" name="team1"/>
-    <employee id='3000' first_name='tasneem' last_name='essam' salary='20000' dob='1996-6-1' graduation='2019' gender='female' team_id='3000' dept_id='3000' national_id="123456789" experience="10" degree="senior"/>
-    <employee id='3002' first_name='Ahmed' last_name='Mohammed' salary='7000' dob='1996-6-1' graduation='2019' gender='male' team_id='3000' dept_id='3000' national_id="123056789" experience="10" degree="senior"  />
+    <employee id='3000' first_name='tasneem' last_name='essam' salary='20000' dob='1996-6-1' graduation='2019' gender='female' team_id='3000' dept_id='3000' national_id="123456789" experience="10" degree="senior"  hiringDate="2020-01-01"/>
+    <employee id='3002' first_name='Ahmed' last_name='Mohammed' salary='7000' dob='1996-6-1' graduation='2019' gender='male' team_id='3000' dept_id='3000' national_id="123056789" experience="10" degree="senior"  hiringDate="2020-01-01" />
 
     <expertise/>
 

@@ -3,6 +3,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.project.HR.Entity.Expertise;
 import lombok.*;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -28,6 +29,8 @@ public class EmployeeCommand {
     private String nationalId;
     private Integer experience;
     private String degree ;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    private LocalDate hiringDate;
 
 
 }

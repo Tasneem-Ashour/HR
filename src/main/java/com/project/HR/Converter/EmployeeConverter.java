@@ -16,7 +16,8 @@ public class EmployeeConverter {
     ModelMapper modelmapper;
     public Employee convertCommandToEntity(EmployeeCommand employeeCommand) {
         modelmapper.getConfiguration().setAmbiguityIgnored(true);
-        Employee employee = modelmapper.map(employeeCommand, Employee.class);
+               Employee employee = modelmapper.map(employeeCommand, Employee.class);
+
         return employee;
     }
     public EmployeeDto covertEntityToDTO(Employee employee) {

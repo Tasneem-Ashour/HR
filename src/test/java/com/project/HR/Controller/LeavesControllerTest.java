@@ -2,6 +2,8 @@ package com.project.HR.Controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.springtestdbunit.DbUnitTestExecutionListener;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
+import com.github.springtestdbunit.annotation.ExpectedDatabase;
+import com.github.springtestdbunit.assertion.DatabaseAssertionMode;
 import com.project.HR.Command.LeaveCommand;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,42 +34,39 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         DbUnitTestExecutionListener.class
 })
 class LeavesControllerTest {
-    //    @BeforeEach
-//    void setUp() {
-//    }
-//    @AfterEach
-//    void tearDown() {
-//    }
+
     @Autowired
     MockMvc mockMvc;
     @Autowired
     ObjectMapper objectMapper;
+
+    @Autowired
+    LeavesController leavesController;
     @Test
-    @DatabaseSetup(value = "dataset/leaves/addLeaves.xml")
-//    @ExpectedDatabase(value = "/dataset/expectedAddEmployeeRreturn200.xml" , assertionMode= DatabaseAssertionMode.NON_STRICT)
+    @DatabaseSetup(value = "/dataset/leaves/addLeaves.xml")
+    @ExpectedDatabase(value = "/dataset/leaves/expectedLeaves.xml" , assertionMode= DatabaseAssertionMode.NON_STRICT)
    public void addLeave_shouldReturnStatus200() throws Exception {
         LocalDate from= LocalDate.of(2022,10,1);
         LocalDate to= LocalDate.of(2022,10,10);
-
         LeaveCommand leaveCommand = LeaveCommand.builder()
-                .emp_id(1)
+                .emp_id(100)
                 .fromDate(from)
                 .toDate(to)
                 .build();
-        this.mockMvc.perform(post("/Leave")
+        this.mockMvc.perform(post("/Leave/")
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
-                .contentType(objectMapper.writeValueAsString(leaveCommand)))
+                .content(objectMapper.writeValueAsString(leaveCommand)))
                 .andExpect(status().isOk());
 
 
     }
     @Test
-    @DatabaseSetup(value = "dataset/getEmployeeLeaves.xml")
+    @DatabaseSetup("/dataset/leaves/getEmployeeLeaves.xml")
     void getEmployeeLeave_shouldReturnStatus200() throws Exception {
         this.mockMvc.perform(get("/Leave/100")
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
-                         .andExpect(status().isOk());
+                .andExpect(status().isOk());
     }
 }

@@ -1,6 +1,8 @@
 package com.project.HR.Entity;
 import lombok.*;
+
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -40,13 +42,15 @@ public class Employee {
     private String nationalId;
     private Integer experience;
     private String degree;
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "emp_id" , referencedColumnName = "id")
-    private List<Leave> leaves = new ArrayList<>();
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "emp_id" , referencedColumnName = "id")
-    private List<Bonus> bonus = new ArrayList<>();
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "emp_id" , referencedColumnName = "id")
-    private List<Raises> raises = new ArrayList<>();
+//    @OneToMany(cascade = CascadeType.ALL )
+//    @JoinColumn (name = "id")
+//    private List<Leaves> leaves = new ArrayList<>();
+////    @OneToMany(cascade = CascadeType.ALL)
+//    @JoinColumn(name = "emp_id", referencedColumnName = "id")
+//    private List<Bonus> bonus = new ArrayList<>();
+//    @OneToMany(cascade = CascadeType.ALL)
+//    @JoinColumn(name = "emp_id", referencedColumnName = "id")
+//    private List<Raises> raises = new ArrayList<>();
+    @Column(name = "hiringdate")
+    private LocalDate hiringDate;
 }
