@@ -7,7 +7,6 @@ import com.github.springtestdbunit.assertion.DatabaseAssertionMode;
 import com.project.HR.Command.EmployeeCommand;
 import com.project.HR.Command.EmployeeEditCommand;
 import com.project.HR.Entity.Expertise;
-import com.project.HR.Repostory.EmployeeRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -45,8 +44,7 @@ public class EmployeeControllerTest {
     MockMvc mockMvc;
     @Autowired
     ObjectMapper objectMapper;
-    @Autowired
-    EmployeeRepository employeeRepository;
+
 // start from 10
     @Test
     @DatabaseSetup(value = "/dataset/addEmployee.xml")
@@ -210,12 +208,7 @@ public class EmployeeControllerTest {
         assertThrows(org.springframework.web.util.NestedServletException.class,
                 ()-> mockMvc.perform(delete("/Employee/300")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON))
-        );
-
-
-
-
+                        .accept(MediaType.APPLICATION_JSON)));
     }
     @Test
     @DatabaseSetup(value = "/dataset/findAllEmployeeInTeam.xml")

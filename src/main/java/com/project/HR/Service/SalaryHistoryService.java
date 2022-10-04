@@ -32,12 +32,13 @@ public class SalaryHistoryService {
         int totalLeavesCount = 0;
         SalaryHistoryDto current = null;
         Employee employee = employeeRepository.getEmployeeByNationalId(nationalId);
-        Double baseGrossSalary = employee.getSalary(); // current Salary
+        double baseGrossSalary = employee.getSalary(); // current Salary
         int employeeId = employee.getId();
         List<Raises> allEmployeeRaises = raisesRepository.getEmployeeRaisesByNationalId(employeeId);
         int i = 0;
         while (i < allEmployeeRaises.size()) {
-            baseGrossSalary /= 1 + allEmployeeRaises.indexOf(i);
+            baseGrossSalary /= 1 + allEmployeeRaises.get(i).getAmount();
+            //            //baseGrossSalary*allEmployeeRaises.indexOf(i-1) /  allEmployeeRaises.indexOf(i);
             i++;
         }
         List<SalaryHistoryDto> result = new ArrayList<>();
@@ -56,11 +57,10 @@ public class SalaryHistoryService {
             }
             Double payRoll = newGross + currentBonus - leavesCost;
             Double deduction = 0.15 * newGross + 500;
-             current = new SalaryHistoryDto(initialDate, currentRaises, currentBonus, deduction, leavesCost, payRoll);
-           result.add(current);
-           initialDate=initialDate.plusMonths(1);
+            current = new SalaryHistoryDto(initialDate, currentRaises, currentBonus, deduction, leavesCost, payRoll);
+            result.add(current);
+            initialDate = initialDate.plusMonths(1);
         }
-
         return result;
     }
 }

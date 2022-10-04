@@ -10,13 +10,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class SalaryHistoryDto {
 
-//    Date = date
-//            Rise = currentRises,
-//            Bonus = currentBonuses,
-//            Gross = newBaseGross,
-//            deduction = 0.15(newBaseGross) + 500,
-//    PayRoll = payRoll,
-//    LeavesCost = leavesCost
+
 
     private LocalDate reportDate;
     private  Double raise;
