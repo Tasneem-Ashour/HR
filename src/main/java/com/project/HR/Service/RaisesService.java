@@ -42,7 +42,7 @@ public class RaisesService {
     }
     public List<RaisesDto> getAllEmployeeRaises(String nationalId) {
         Employee employee = employeeRepository.getEmployeeByNationalId(nationalId);
-        var raises = raisesRepository.getEmployeeRaisesByEmp_Id(employee.getId());
+        var raises = raisesRepository.getEmployeeRaisesByNationalId(employee.getId());
         List<RaisesDto> raisesDto = new ArrayList<>();
         raises.forEach(raises1 -> raisesDto.add(raisesConvertor.convertEntityToDto(raises1)));
         return raisesDto;

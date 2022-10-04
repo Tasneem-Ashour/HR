@@ -9,11 +9,15 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SalaryHistoryDto {
+
+
+
     private LocalDate reportDate;
-    private Double taxes;
-    private Double insurances;
-    private Double leavesCost;
-    private Double raise;
-    private Double bonus;
-    private Double payRoll;
-}
+    private  Double raise;
+    private  Double bonus;
+    private  Double  deduction ;
+    private  Double leavesCost;
+    private  Double payRoll;
+
+
+    }
