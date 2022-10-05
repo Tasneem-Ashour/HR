@@ -61,18 +61,20 @@ public class SalaryHistoryService {
 
             int currentExtendLeaves = leaveService.getNumberOfLeavesDays(initialDate, employeeId);
 
-            Double newGross = baseGrossSalary + (currentRaises * baseGrossSalary);
+             baseGrossSalary = baseGrossSalary + (currentRaises * baseGrossSalary);
+            baseGrossSalary= Math.round(baseGrossSalary * 100.0) / 100.0;
+
             totalLeavesCount += currentExtendLeaves;
             double leavesCost = 0.0;
 
             if (limit < totalLeavesCount) {
-                leavesCost = (totalLeavesCount - limit) * newGross / 22;
+                leavesCost = (totalLeavesCount - limit) * baseGrossSalary / 22;
                 totalLeavesCount = limit;
             }
             leavesCost= Math.round(leavesCost * 100.0) / 100.0;
 
 
-            Double grossAfterLeavesDeduction = newGross - leavesCost;
+            Double grossAfterLeavesDeduction = baseGrossSalary - leavesCost;
 
             Double taxes = taxesRatio * grossAfterLeavesDeduction;
             taxes = getaDouble(taxes);
@@ -80,7 +82,7 @@ public class SalaryHistoryService {
             Double deduction = leavesCost + taxes + insurances;
             deduction= Math.round(deduction * 100.0) / 100.0;
 
-            Double payRoll = newGross + currentBonus - deduction;
+            Double payRoll = baseGrossSalary + currentBonus - deduction;
 
             current = new SalaryHistoryDto
                     (initialDate,
