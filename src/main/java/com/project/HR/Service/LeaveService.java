@@ -55,7 +55,7 @@ public class LeaveService {
         return leaveConverter.convertEntityToDto(leaves);
     }
     public List<LeaveDto> getEmployeeLeavesByDate(LocalDate date, int emp_id) throws Exception {
-        List<Leaves> x = leaveRepository.getLeavesByDate(date, emp_id);
+        List<Leaves> x = leaveRepository.getLeavesByDateAndEmp_id(date, emp_id);
         List<LeaveDto> leaveDto = new ArrayList<>();
         x.forEach(e -> leaveDto.add(leaveConverter.convertEntityToDto(e)));
         return leaveDto;

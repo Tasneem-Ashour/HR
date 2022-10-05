@@ -12,7 +12,7 @@ import java.util.List;
 @Transactional
 public interface RaisesRepository extends JpaRepository<Raises , Integer> {
     @Query("select u from Raises u Where u.emp_id =:x")
-    List<Raises> getEmployeeRaisesByNationalId(@Param("x") int emp_id);
+    List<Raises> findRaisesByEmp_id(@Param("x") int emp_id);
 
 
     @Query(nativeQuery = true, value = "Select *  from raises  where Month(raisesDate) = Month(:Date) " +

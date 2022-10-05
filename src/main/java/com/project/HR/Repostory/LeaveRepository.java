@@ -14,7 +14,7 @@ public interface LeaveRepository  extends JpaRepository<Leaves, Integer> {
 
     @Query(nativeQuery = true, value = "Select *  from leaves  where Month(toDate) = Month(:toDate1) " +
             "And Year(toDate) =  Year(:toDate1) and emp_id=:x")
-    List<Leaves> getLeavesByDate(@Param("toDate1") LocalDate toDate ,@Param("x") int emp_id);
+    List<Leaves> getLeavesByDateAndEmp_id(@Param("toDate1") LocalDate toDate , @Param("x") int emp_id);
 
 //    @Query("select u from Leaves Where u.emp_id =:x")
 //    List<Leaves> getAllEmployeeLeaves(@Param("x") int emp_id);

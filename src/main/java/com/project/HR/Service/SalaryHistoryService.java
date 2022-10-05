@@ -14,6 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 @Service
 public class SalaryHistoryService {
+    final double taxesRatio = 0.15;
+    final double insurances = 500;
     @Autowired
     BonusRepository bonusRepository;
     @Autowired
@@ -28,39 +30,75 @@ public class SalaryHistoryService {
     RaisesService raisesService;
     @Autowired
     LeaveService leaveService;
-    public List<SalaryHistoryDto> salaryHistoryDto(String nationalId) throws Exception {
-        int totalLeavesCount = 0;
-        SalaryHistoryDto current = null;
-        Employee employee = employeeRepository.getEmployeeByNationalId(nationalId);
-        double baseGrossSalary = employee.getSalary(); // current Salary
-        int employeeId = employee.getId();
-        List<Raises> allEmployeeRaises = raisesRepository.getEmployeeRaisesByNationalId(employeeId);
+    private static double getBaseGrossSalary(double baseGrossSalary, List<Raises> allEmployeeRaises) {
         int i = 0;
         while (i < allEmployeeRaises.size()) {
             baseGrossSalary /= 1 + allEmployeeRaises.get(i).getAmount();
-            //            //baseGrossSalary*allEmployeeRaises.indexOf(i-1) /  allEmployeeRaises.indexOf(i);
             i++;
         }
+        return baseGrossSalary;
+    }
+    public List<SalaryHistoryDto> salaryHistoryDto(int employeeId) throws Exception {
+        int totalLeavesCount = 0;
+        SalaryHistoryDto current = null;
+        Employee employee = employeeRepository.findById(employeeId).get();
+        double baseGrossSalary = employee.getSalary(); // current Salary
+        List<Raises> allEmployeeRaises = raisesRepository.findRaisesByEmp_id(employeeId);
+
+        baseGrossSalary = getBaseGrossSalary(baseGrossSalary, allEmployeeRaises);
+
         List<SalaryHistoryDto> result = new ArrayList<>();
+
         LocalDate initialDate = employee.getHiringDate();
+
         int limit = employee.getExperience() >= 10 ? 30 : 21;
-        while (initialDate.compareTo(LocalDate.now()) < 0) {
+
+        while (initialDate.compareTo(LocalDate.of(LocalDate.now().getYear(), LocalDate.now().getMonth(), 1)) < 0) {
+
             Double currentBonus = bonusService.getEmployeeBonusValueByDateAndEmployeeId(initialDate, employeeId);
+
             Double currentRaises = raisesService.getEmployeeRaisesValueByDateAndEmployeeId(initialDate, employeeId);
+
             int currentExtendLeaves = leaveService.getNumberOfLeavesDays(initialDate, employeeId);
+
             Double newGross = baseGrossSalary + (currentRaises * baseGrossSalary);
             totalLeavesCount += currentExtendLeaves;
-            Double leavesCost = 0.0;
+            double leavesCost = 0.0;
+
             if (limit < totalLeavesCount) {
                 leavesCost = (totalLeavesCount - limit) * newGross / 22;
                 totalLeavesCount = limit;
             }
-            Double payRoll = newGross + currentBonus - leavesCost;
-            Double deduction = 0.15 * newGross + 500;
-            current = new SalaryHistoryDto(initialDate, currentRaises, currentBonus, deduction, leavesCost, payRoll);
+            leavesCost= Math.round(leavesCost * 100.0) / 100.0;
+
+
+            Double grossAfterLeavesDeduction = newGross - leavesCost;
+
+            Double taxes = taxesRatio * grossAfterLeavesDeduction;
+            taxes = getaDouble(taxes);
+
+            Double deduction = leavesCost + taxes + insurances;
+            deduction= Math.round(deduction * 100.0) / 100.0;
+
+            Double payRoll = newGross + currentBonus - deduction;
+
+            current = new SalaryHistoryDto
+                    (initialDate,
+                     taxes,
+                     insurances,
+                     leavesCost,
+                     deduction,
+                     currentRaises,
+                     currentBonus,
+                     payRoll,
+                     baseGrossSalary);
             result.add(current);
             initialDate = initialDate.plusMonths(1);
         }
         return result;
+    }
+    private static Double getaDouble(Double taxes) {
+        taxes = Math.round(taxes * 100.0) / 100.0;
+        return taxes;
     }
 }

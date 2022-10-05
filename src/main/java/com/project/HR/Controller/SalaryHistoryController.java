@@ -14,9 +14,9 @@ public class SalaryHistoryController {
     @Autowired
     SalaryHistoryService salaryHistoryService;
 
-    @GetMapping(value = "/{nationalId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List< SalaryHistoryDto> getEmployeeSalaryHistory (@PathVariable  String nationalId) throws Exception {
-        return salaryHistoryService.salaryHistoryDto(nationalId);
+    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List< SalaryHistoryDto> getEmployeeSalaryHistory (@PathVariable  int id) throws Exception {
+        return salaryHistoryService.salaryHistoryDto(id);
 
     }
 }
