@@ -2,9 +2,7 @@ package com.project.HR.Service;
 import com.project.HR.DTO.SalaryHistoryDto;
 import com.project.HR.Entity.Employee;
 import com.project.HR.Entity.Raises;
-import com.project.HR.Repostory.BonusRepository;
 import com.project.HR.Repostory.EmployeeRepository;
-import com.project.HR.Repostory.LeaveRepository;
 import com.project.HR.Repostory.RaisesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,10 +14,7 @@ import java.util.List;
 public class SalaryHistoryService {
     final double taxesRatio = 0.15;
     final double insurances = 500;
-    @Autowired
-    BonusRepository bonusRepository;
-    @Autowired
-    LeaveRepository leaveRepository;
+
     @Autowired
     RaisesRepository raisesRepository;
     @Autowired
@@ -46,6 +41,8 @@ public class SalaryHistoryService {
         List<Raises> allEmployeeRaises = raisesRepository.findRaisesByEmp_id(employeeId);
 
         baseGrossSalary = getBaseGrossSalary(baseGrossSalary, allEmployeeRaises);
+        baseGrossSalary= Math.round(baseGrossSalary * 100.0) / 100.0;
+
 
         List<SalaryHistoryDto> result = new ArrayList<>();
 
@@ -61,8 +58,7 @@ public class SalaryHistoryService {
 
             int currentExtendLeaves = leaveService.getNumberOfLeavesDays(initialDate, employeeId);
 
-             baseGrossSalary = baseGrossSalary + (currentRaises * baseGrossSalary);
-            baseGrossSalary= Math.round(baseGrossSalary * 100.0) / 100.0;
+
 
             totalLeavesCount += currentExtendLeaves;
             double leavesCost = 0.0;
@@ -83,6 +79,7 @@ public class SalaryHistoryService {
             deduction= Math.round(deduction * 100.0) / 100.0;
 
             Double payRoll = baseGrossSalary + currentBonus - deduction;
+            payRoll= Math.round(payRoll * 100.0) / 100.0;
 
             current = new SalaryHistoryDto
                     (initialDate,
@@ -95,6 +92,9 @@ public class SalaryHistoryService {
                      payRoll,
                      baseGrossSalary);
             result.add(current);
+            baseGrossSalary = baseGrossSalary + (currentRaises * baseGrossSalary);
+
+            baseGrossSalary= Math.round(baseGrossSalary * 100.0) / 100.0;
             initialDate = initialDate.plusMonths(1);
         }
         return result;

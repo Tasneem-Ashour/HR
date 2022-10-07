@@ -49,16 +49,16 @@ class SalaryHistoryControllerTest {
                                      .contentType(MediaType.APPLICATION_JSON)
                                      .accept(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.[*]raises", contains(0.5,0.0)))
-                .andExpect(jsonPath("$.[*].gross", contains(30000.0 ,30000.0)))
-                .andExpect(jsonPath("$.[0].gross", is(30000.0)))
+                .andExpect(jsonPath("$.[*].gross", contains(20000.0 ,30000.0)))
+                .andExpect(jsonPath("$.[0].gross", is(20000.0)))
                 .andExpect(jsonPath("$.[1].gross", is(30000.0)))
 
-                .andExpect(jsonPath("$.[0].deduction", is(5000.0)))
+                .andExpect(jsonPath("$.[0].deduction", is(3500.0)))
                 .andExpect(jsonPath("$.[1].deduction", is(5000.0)))
 
-                .andExpect(jsonPath("$.[*].payRoll", contains(25000.0,16500.0)))
+                .andExpect(jsonPath("$.[*].payRoll", contains(16500.0,25000.0)))
                 .andExpect(jsonPath("$.[0].leavesCost", is(0.0)))
-                .andExpect(jsonPath("$.[0].taxes", is(4500.0)))
+                .andExpect(jsonPath("$.[0].taxes", is(3000.0)))
                 .andExpect(jsonPath("$.[0].insurances", is(500.0)))
                 .andExpect(jsonPath("$.[0].bonus", is(0.0)));
     }
@@ -69,13 +69,13 @@ class SalaryHistoryControllerTest {
                                      .contentType(MediaType.APPLICATION_JSON)
                                      .accept(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.[*]raises", contains(0.6,0.0)))
-                .andExpect(jsonPath("$.[*].gross", contains(29090.91,29090.91)))
+                .andExpect(jsonPath("$.[*].gross", contains(18181.82,29090.91)))
 //                .andExpect(jsonPath("$.[0].gross", is(1811.81818181818)))
 //                .andExpect(jsonPath("$.[1].gross", is(18181.81818181818)))
-                .andExpect(jsonPath("$.[0].deduction", is(4863.64)))
-                .andExpect(jsonPath("$.[0].payRoll", is(24227.27)))
+                .andExpect(jsonPath("$.[0].deduction", is(3227.27)))
+                .andExpect(jsonPath("$.[0].payRoll", is(14954.55)))
                 .andExpect(jsonPath("$.[0].leavesCost", is(0.0)))
-                .andExpect(jsonPath("$.[0].taxes", is(4363.64)))
+                .andExpect(jsonPath("$.[0].taxes", is(2727.27)))
                 .andExpect(jsonPath("$.[0].insurances", is(500.0)))
                 .andExpect(jsonPath("$.[0].bonus", is(0.0)));
     }
