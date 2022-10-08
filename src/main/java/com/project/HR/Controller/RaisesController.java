@@ -30,9 +30,9 @@ public class RaisesController {
     }
 
 
-    @GetMapping(path = "/employee/{nationalId}" , produces = MediaType.APPLICATION_JSON_VALUE )
-    public List<RaisesDto> getAllEmployeeRaises(@PathVariable String nationalId) throws Exception {
-        return raisesService.getAllEmployeeRaises(nationalId);
+    @GetMapping(path = "/employee/{id}" , produces = MediaType.APPLICATION_JSON_VALUE )
+    public List<RaisesDto> getAllEmployeeRaises(@PathVariable int id) throws Exception {
+        return raisesService.getAllEmployeeRaises(id);
     }
 
     @GetMapping(path = "/local-Date" , produces = MediaType.APPLICATION_JSON_VALUE)

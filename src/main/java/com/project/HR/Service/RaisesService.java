@@ -40,9 +40,8 @@ public class RaisesService {
         employeeRepository.save(employee);
         return raisesConvertor.convertEntityToDto(raises);
     }
-    public List<RaisesDto> getAllEmployeeRaises(String nationalId) {
-        Employee employee = employeeRepository.getEmployeeByNationalId(nationalId);
-        var raises = raisesRepository.findRaisesByEmp_id(employee.getId());
+    public List<RaisesDto> getAllEmployeeRaises(int  emp_id) {
+        var raises = raisesRepository.findRaisesByEmp_id(emp_id);
         List<RaisesDto> raisesDto = new ArrayList<>();
         raises.forEach(raises1 -> raisesDto.add(raisesConvertor.convertEntityToDto(raises1)));
         return raisesDto;

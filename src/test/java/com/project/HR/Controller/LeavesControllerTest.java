@@ -133,7 +133,6 @@ class LeavesControllerTest {
                 .accept(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(leaveCommand)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.fromDate", Matchers.is("2022-10-01")));
         ;
 
 
