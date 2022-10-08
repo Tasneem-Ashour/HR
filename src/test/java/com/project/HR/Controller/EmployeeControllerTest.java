@@ -47,8 +47,8 @@ public class EmployeeControllerTest {
 
 // start from 10
     @Test
-    @DatabaseSetup(value = "/dataset/addEmployee.xml")
-    @ExpectedDatabase(value = "/dataset/expectedAddEmployeeRreturn200.xml" , assertionMode= DatabaseAssertionMode.NON_STRICT)
+    @DatabaseSetup(value = "/dataset/employee/addEmployee.xml")
+    @ExpectedDatabase(value = "/dataset/employee/expectedAddEmployeeRreturn200.xml", assertionMode= DatabaseAssertionMode.NON_STRICT)
     public void addEmployee_thenReturnStates200() throws Exception {
         Calendar calendar = Calendar.getInstance();
         calendar.set(1996,Calendar.JUNE,1);
@@ -82,8 +82,8 @@ public class EmployeeControllerTest {
     }
 
     @Test
-    @DatabaseSetup(value = "/dataset/addEmployee.xml")
-    @ExpectedDatabase(value = "/dataset/expectedAddEmployeeRreturnEmployeeObject.xml", assertionMode= DatabaseAssertionMode.NON_STRICT)
+    @DatabaseSetup(value = "/dataset/employee/addEmployee.xml")
+    @ExpectedDatabase(value = "/dataset/employee/expectedAddEmployeeRreturnEmployeeObject.xml", assertionMode= DatabaseAssertionMode.NON_STRICT)
     public void addEmployee_theReturnEmployeeObject() throws Exception {
         Calendar calendar = Calendar.getInstance();
         calendar.set(1996,Calendar.JUNE,1);
@@ -133,7 +133,7 @@ public class EmployeeControllerTest {
     }
 //start from 100
     @Test
-    @DatabaseSetup(value = "/dataset/findEmployeeWithIdExist.xml")
+    @DatabaseSetup(value = "/dataset/employee/findEmployeeWithIdExist.xml")
     public void getEmployeeDetailsTest_ShouldReturnStatus200() throws Exception {
         mockMvc.perform(get("/Employee/100")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -142,7 +142,7 @@ public class EmployeeControllerTest {
     }
     @Test
     
-    @DatabaseSetup(value = "/dataset/findEmployeeWithIdExist.xml")
+    @DatabaseSetup(value = "/dataset/employee/findEmployeeWithIdExist.xml")
     public void getEmployeeDetailsTest_ShouldReturnEmployeeObject() throws Exception {
         mockMvc.perform(get("/Employee/100")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -163,7 +163,7 @@ public class EmployeeControllerTest {
     }
 
     @Test
-    @DatabaseSetup(value = "/dataset/findEmployeeWithIdExist.xml")
+    @DatabaseSetup(value = "/dataset/employee/findEmployeeWithIdExist.xml")
     public void geEmployee_shouldReturnNotNull() throws Exception {
         mockMvc.perform(get("/Employee/100")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -173,7 +173,7 @@ public class EmployeeControllerTest {
 
     @Test
     
-    @DatabaseSetup(value = "/dataset/findEmployeeWithIdExist.xml")
+    @DatabaseSetup(value = "/dataset/employee/findEmployeeWithIdExist.xml")
     public void geEmployeeDoneNotExist_shouldException() throws Exception {
 
         assertThrows(org.springframework.web.util.NestedServletException.class,
@@ -182,8 +182,8 @@ public class EmployeeControllerTest {
                 .accept(MediaType.APPLICATION_JSON)));
     }
     @Test
-    @DatabaseSetup(value = "/dataset/deleteEmployeeWithIdExist.xml")
-    @ExpectedDatabase(value = "/dataset/expectedDeleteEmployeeWithIdExist.xml", assertionMode= DatabaseAssertionMode.NON_STRICT)
+    @DatabaseSetup(value = "/dataset/employee/deleteEmployeeWithIdExist.xml")
+    @ExpectedDatabase(value = "/dataset/employee/expectedDeleteEmployeeWithIdExist.xml", assertionMode= DatabaseAssertionMode.NON_STRICT)
     public void deleteEmployee_shouldReturn204() throws Exception {
         mockMvc.perform(delete("/Employee/201")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -191,7 +191,7 @@ public class EmployeeControllerTest {
                 .andExpect(status().isNoContent());
     }
     @Test
-    @DatabaseSetup(value = "/dataset/deleteEmployeeWithIdDoesn'tExist.xml")
+    @DatabaseSetup(value = "/dataset/employee/deleteEmployeeWithIdDoesn'tExist.xml")
     public void deleteEmployeeThatNotExist_shouldReturnException() throws Exception {
         assertThrows(org.springframework.web.util.NestedServletException.class,
                 ()->mockMvc.perform(delete("/Employee/1000")
@@ -202,7 +202,7 @@ public class EmployeeControllerTest {
     }
     //range 300
     @Test
-    @DatabaseSetup(value = "/dataset/deleteEmployeeDoesn'tHaveManager.xml")
+    @DatabaseSetup(value = "/dataset/employee/deleteEmployeeDoesn'tHaveManager.xml")
     public void deleteEmployeeThatDoesNotHaveManager_shouldReturnException() throws Exception {
 
         assertThrows(org.springframework.web.util.NestedServletException.class,
@@ -211,7 +211,7 @@ public class EmployeeControllerTest {
                         .accept(MediaType.APPLICATION_JSON)));
     }
     @Test
-    @DatabaseSetup(value = "/dataset/findAllEmployeeInTeam.xml")
+    @DatabaseSetup(value = "/dataset/employee/findAllEmployeeInTeam.xml")
     public void getEmployeesInTeam_ShouldReturnStatus200() throws Exception {
         mockMvc.perform(get("/Employee/team/1000")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -221,7 +221,7 @@ public class EmployeeControllerTest {
     }
 @Test
 
-@DatabaseSetup(value = "/dataset/findAllEmployeeInTeam.xml")
+@DatabaseSetup(value = "/dataset/employee/findAllEmployeeInTeam.xml")
     public void getEmployeesInTeam_ShouldContains4EmployeesWithFirstName() throws Exception {
         mockMvc.perform(get("/Employee/team/1000")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -234,7 +234,7 @@ public class EmployeeControllerTest {
 //1000
     @Test
     
-    @DatabaseSetup(value = "/dataset/findEmployeesInTeamDoesn'tExist.xml")
+    @DatabaseSetup(value = "/dataset/employee/findEmployeesInTeamDoesn'tExist.xml")
     public void getEmployeesInTeamEmpty_ShouldReturnException() throws Exception {
         assertThrows(org.springframework.web.util.NestedServletException.class,
                 ()-> mockMvc.perform(get("/Employee/team/1000")
@@ -245,7 +245,7 @@ public class EmployeeControllerTest {
 
     }
     @Test
-    @DatabaseSetup(value = "/dataset/findEmployeeSalary.xml")
+    @DatabaseSetup(value = "/dataset/employee/findEmployeeSalary.xml")
     public void checkEmployeeHasSalaryNetAndGross_shouldBeReturnStatus200() throws Exception {
         mockMvc.perform(get("/Employee/salary/900")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -253,7 +253,7 @@ public class EmployeeControllerTest {
                 .andExpect(status().isOk());
     }
     @Test
-    @DatabaseSetup(value = "/dataset/findEmployeeGrossSalary.xml")
+    @DatabaseSetup(value = "/dataset/employee/findEmployeeGrossSalary.xml")
     public void checkEmployeeHasGrossSalary_shouldBeReturn20000() throws Exception {
         mockMvc.perform(get("/Employee/salary/950")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -262,7 +262,7 @@ public class EmployeeControllerTest {
     }
     //2000
     @Test
-    @DatabaseSetup(value = "/dataset/findEmployeeNetSalary.xml")
+    @DatabaseSetup(value = "/dataset/employee/findEmployeeNetSalary.xml")
     public void checkEmployeeHasNetSalary_whereGrossSalary20000_shouldBeReturn16500() throws Exception {
         mockMvc.perform(get("/Employee/salary/2000")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -271,7 +271,7 @@ public class EmployeeControllerTest {
     }
     @Test
     
-    @DatabaseSetup(value = "/dataset/NoEmployeeFoundToGetSalary.xml")
+    @DatabaseSetup(value = "/dataset/employee/NoEmployeeFoundToGetSalary.xml")
     public void checkEmployeeNotFoundToGetHisSalary_shouldBeReturnException() throws Exception {
         assertThrows(org.springframework.web.util.NestedServletException.class,
                 ()-> mockMvc.perform(get("/Employee/salary/8")
@@ -282,8 +282,8 @@ public class EmployeeControllerTest {
     }
     //3000
     @Test
-    @DatabaseSetup(value = "/dataset/editeEmployee.xml")
-    @ExpectedDatabase(value = "/dataset/expectedEditeEmployee.xml", assertionMode= DatabaseAssertionMode.NON_STRICT)
+    @DatabaseSetup(value = "/dataset/employee/editeEmployee.xml")
+    @ExpectedDatabase(value = "/dataset/employee/expectedEditeEmployee.xml", assertionMode= DatabaseAssertionMode.NON_STRICT)
     public void updateEmployee_thenReturnStates204() throws Exception {
         Calendar calendar = Calendar.getInstance();
         calendar.set(1996,5,1);
@@ -316,7 +316,7 @@ public class EmployeeControllerTest {
 
     }
     @Test
-    @DatabaseSetup(value = "/dataset/findEmployeeUnderMangerRec.xml")
+    @DatabaseSetup(value = "/dataset/employee/findEmployeeUnderMangerRec.xml")
     public void getAllEmployeeUnderManagerRec_ShouldReturnStatus200() throws Exception {
         mockMvc.perform(get("/Employee/employeesUnderManager/4000")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -326,7 +326,7 @@ public class EmployeeControllerTest {
 
     @Test
     
-    @DatabaseSetup(value = "/dataset/findEmployeeUnderMangerRec.xml")
+    @DatabaseSetup(value = "/dataset/employee/findEmployeeUnderMangerRec.xml")
     public void getAllEmployeeUnderManagerRec_ShouldReturn3EmployeesWithFirstName() throws Exception {
         mockMvc.perform(get("/Employee/employeesUnderManager/4000")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -336,7 +336,7 @@ public class EmployeeControllerTest {
                           containsInAnyOrder( "Mahmoud","Noura","Ahmed")));    }
     @Test
     
-    @DatabaseSetup(value = "/dataset/findEmployeeUnderMangerRec.xml")
+    @DatabaseSetup(value = "/dataset/employee/findEmployeeUnderMangerRec.xml")
     public void getAllEmployeeUnderManagerRec_WhereManagerNotExist_ShouldReturnException() throws Exception {
         assertThrows(org.springframework.web.util.NestedServletException.class,
                 ()->  mockMvc.perform(get("/Employee/employeesUnderManager/8")
@@ -348,7 +348,7 @@ public class EmployeeControllerTest {
     //5000
     @Test
     
-    @DatabaseSetup(value = "/dataset/findEmployeesUnderDirectlyManger.xml")
+    @DatabaseSetup(value = "/dataset/employee/findEmployeesUnderDirectlyManger.xml")
     public void getAllEmployeeUnderDirectlyManager_ShouldReturnStatus200() throws Exception {
         mockMvc.perform(get("/Employee/manager/5000")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -358,7 +358,7 @@ public class EmployeeControllerTest {
     }
 
     @Test
-    @DatabaseSetup(value = "/dataset/findEmployeesUnderDirectlyManger.xml")
+    @DatabaseSetup(value = "/dataset/employee/findEmployeesUnderDirectlyManger.xml")
     public void getAllEmployeeUnderDirectlyManager_ShouldReturn2EmployeeWithCheckedFirstName() throws Exception {
         mockMvc.perform(get("/Employee/manager/5001")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -368,7 +368,7 @@ public class EmployeeControllerTest {
                         containsInAnyOrder("Noura","Ahmed")));
     }
     @Test
-    @DatabaseSetup(value = "/dataset/findEmployeesUnderDirectlyManger.xml")
+    @DatabaseSetup(value = "/dataset/employee/findEmployeesUnderDirectlyManger.xml")
     public void getAllEmployeeUnderDirectlyManager_WhereManagerNotExist_ShouldReturnException() throws Exception {
         assertThrows(org.springframework.web.util.NestedServletException.class,
                 ()->mockMvc.perform(get("/Employee/manager/8")

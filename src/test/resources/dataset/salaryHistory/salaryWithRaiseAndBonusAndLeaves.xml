@@ -3,10 +3,14 @@
     <department id="10" name='dept1'/>
     <team id="10" name='team1'/>
     <employee id="10" first_name='tasneem' last_name='essam' salary='20000' dob='1996-6-1' graduation='2019'
-              gender='female' team_id='10' dept_id='10' national_id="123456789" experience="10" degree="senior"
-              hiringDate="2022-09-01"/>
+              gender='female' team_id='10' dept_id='10' national_id="123456789" experience="2" degree="senior"
+              hiringDate="2022-08-01"/>
+
+    <leaves id="1" fromDate="2022-08-05" toDate="2022-09-08" emp_id="10"/>
 
     <bonus id="1" emp_id="10" amount="1" bonusDate="2022-09-19"/>
+
+    <raises id="1" amount="0.5" raisesdate="2022-08-15" emp_id="10"/>
 
 
 </dataset>

@@ -53,6 +53,7 @@ public class SalaryHistoryService {
         while (initialDate.compareTo(LocalDate.of(LocalDate.now().getYear(), LocalDate.now().getMonth(), 1)) < 0) {
 
             Double currentBonus = bonusService.getEmployeeBonusValueByDateAndEmployeeId(initialDate, employeeId);
+            currentBonus= currentBonus*baseGrossSalary;
 
             Double currentRaises = raisesService.getEmployeeRaisesValueByDateAndEmployeeId(initialDate, employeeId);
 

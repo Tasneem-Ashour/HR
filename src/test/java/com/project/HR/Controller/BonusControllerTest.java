@@ -47,7 +47,7 @@ class BonusControllerTest {
         BonusCommand bonusCommand = BonusCommand.builder()
                 .emp_id(1)
                 .bonusDate(date)
-                .amount(1000.0)
+                .amount(1.0)
                 .build();
         this.mockMvc.perform(post("/Bonus/")
                         .contentType(MediaType.APPLICATION_JSON)
