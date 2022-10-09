@@ -1,5 +1,4 @@
 package com.project.HR.Entity;
-import com.project.HR.security.Entity.User;
 import lombok.*;
 
 import javax.persistence.*;
@@ -45,7 +44,6 @@ public class Employee {
     private String degree;
     @Column(name = "hiringdate")
     private LocalDate hiringDate;
-    @OneToOne(mappedBy = "employee", cascade = CascadeType.ALL)
-    private User user;
+
 
 }
