@@ -47,10 +47,10 @@ class UserControllerTest {
                 .email("user@orange.com")
                 .password("1234")
                 .roles(new ArrayList<>())
-                .employeeId(1)
+                .employee_id(1)
                 .build();
         Role role = Role.builder()
-                .name("Hr")
+                .id(1)
                 .build();
         userCommand.getRoles().add(role);
                 this.mockMvc.perform(post("/employee/user")

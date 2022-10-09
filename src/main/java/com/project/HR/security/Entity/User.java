@@ -11,7 +11,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "user")
+@Table(name = "user_credential")
 public class User {
 
     @Id
@@ -22,6 +22,7 @@ public class User {
     @ManyToMany(fetch = FetchType.EAGER)
     private List<Role> roles = new ArrayList<>();
     @OneToOne
-    @JoinColumn(name = "employee_id")
+    @JoinColumn(name = "employee_id" ,insertable=false, updatable=false)
     private Employee employee;
+    private Integer employee_id;
 }

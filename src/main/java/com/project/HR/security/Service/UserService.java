@@ -14,6 +14,7 @@ public class UserService {
     UserConverter userConverter;
     public UserDto addUser(UserCommand userCommand) {
         User user = userConverter.convertCommandToEntity(userCommand);
+        user.setRoles(userCommand.getRoles());
         userRepository.save(user);
         UserDto userDto = userConverter.convertEntityToDto(user);
         return userDto;

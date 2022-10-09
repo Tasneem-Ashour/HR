@@ -14,5 +14,5 @@ public class UserCommand {
     private String email;
     private String password;
     private List<Role> roles = new ArrayList<>();
-    private Integer employeeId;
+    private Integer employee_id;
 }
