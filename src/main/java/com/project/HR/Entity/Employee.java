@@ -1,4 +1,5 @@
 package com.project.HR.Entity;
+import com.project.HR.security.Entity.User;
 import lombok.*;
 
 import javax.persistence.*;
@@ -42,15 +43,9 @@ public class Employee {
     private String nationalId;
     private Integer experience;
     private String degree;
-//    @OneToMany(cascade = CascadeType.ALL )
-//    @JoinColumn (name = "id")
-//    private List<Leaves> leaves = new ArrayList<>();
-////    @OneToMany(cascade = CascadeType.ALL)
-//    @JoinColumn(name = "emp_id", referencedColumnName = "id")
-//    private List<Bonus> bonus = new ArrayList<>();
-//    @OneToMany(cascade = CascadeType.ALL)
-//    @JoinColumn(name = "emp_id", referencedColumnName = "id")
-//    private List<Raises> raises = new ArrayList<>();
     @Column(name = "hiringdate")
     private LocalDate hiringDate;
+    @OneToOne(mappedBy = "employee", cascade = CascadeType.ALL)
+    private User user;
+
 }

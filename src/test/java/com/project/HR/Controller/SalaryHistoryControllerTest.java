@@ -30,7 +30,10 @@ class SalaryHistoryControllerTest {
     @Test
     @DatabaseSetup(value = "/dataset/salaryHistory/salaryHistory.xml")
     public void getSalaryHistory() throws Exception {
-        this.mockMvc.perform(get("/salaryHistory/10").contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
+        this.mockMvc.perform(get("/salaryHistory/10")
+                                     .contentType(MediaType.APPLICATION_JSON)
+                                     .accept(MediaType.APPLICATION_JSON))
+                                    .andExpect(status().isOk());
     }
 
     @Test
@@ -70,8 +73,6 @@ class SalaryHistoryControllerTest {
                                      .accept(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.[*]raises", contains(0.6,0.0)))
                 .andExpect(jsonPath("$.[*].gross", contains(18181.82,29090.91)))
-//                .andExpect(jsonPath("$.[0].gross", is(1811.81818181818)))
-//                .andExpect(jsonPath("$.[1].gross", is(18181.81818181818)))
                 .andExpect(jsonPath("$.[0].deduction", is(3227.27)))
                 .andExpect(jsonPath("$.[0].payRoll", is(14954.55)))
                 .andExpect(jsonPath("$.[0].leavesCost", is(0.0)))
@@ -83,7 +84,17 @@ class SalaryHistoryControllerTest {
     @Test
     @DatabaseSetup(value = "/dataset/salaryHistory/employeeThatHaveOnlyGrossSalary.xml")
     public void salaryWithOneRaiseInMonth() throws Exception {
-        this.mockMvc.perform(get("/salaryHistory/10").contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)).andExpect(jsonPath("$[0].deduction", is(3500.0))).andExpect(jsonPath("$.[0].payRoll", is(16500.0))).andExpect(jsonPath("$.[0].leavesCost", is(0.0))).andExpect(jsonPath("$.[0].taxes", is(3000.0))).andExpect(jsonPath("$.[0].insurances", is(500.0))).andExpect(jsonPath("$.[0].bonus", is(0.0))).andExpect(jsonPath("$.[0].raises", is(0.0))).andExpect(jsonPath("$.[0].gross", is(20000.0)))
+        this.mockMvc.perform(get("/salaryHistory/10")
+                                     .contentType(MediaType.APPLICATION_JSON)
+                                     .accept(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$[0].deduction", is(3500.0)))
+                .andExpect(jsonPath("$.[0].payRoll", is(16500.0)))
+                .andExpect(jsonPath("$.[0].leavesCost", is(0.0)))
+                .andExpect(jsonPath("$.[0].taxes", is(3000.0)))
+                .andExpect(jsonPath("$.[0].insurances", is(500.0)))
+                .andExpect(jsonPath("$.[0].bonus", is(0.0)))
+                .andExpect(jsonPath("$.[0].raises", is(0.0)))
+                .andExpect(jsonPath("$.[0].gross", is(20000.0)))
 
         ;
     }
@@ -91,13 +102,33 @@ class SalaryHistoryControllerTest {
     @Test
     @DatabaseSetup(value = "/dataset/salaryHistory/bonus/salaryWithOneBonusInMonth.xml")
     public void salaryWithOneBonusInMonth() throws Exception {
-        this.mockMvc.perform(get("/salaryHistory/10").contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)).andExpect(jsonPath("$[0].deduction", is(3500.0))).andExpect(jsonPath("$.[0].payRoll", is(16600.0))).andExpect(jsonPath("$.[0].leavesCost", is(0.0))).andExpect(jsonPath("$.[0].taxes", is(3000.0))).andExpect(jsonPath("$.[0].insurances", is(500.0))).andExpect(jsonPath("$.[0].bonus", is(100.0))).andExpect(jsonPath("$.[0].raises", is(0.0))).andExpect(jsonPath("$.[0].gross", is(20000.0)));
+        this.mockMvc.perform(get("/salaryHistory/10")
+                                     .contentType(MediaType.APPLICATION_JSON)
+                                     .accept(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$[0].deduction", is(3500.0)))
+                .andExpect(jsonPath("$.[0].payRoll", is(16600.0)))
+                .andExpect(jsonPath("$.[0].leavesCost", is(0.0)))
+                .andExpect(jsonPath("$.[0].taxes", is(3000.0)))
+                .andExpect(jsonPath("$.[0].insurances", is(500.0)))
+                .andExpect(jsonPath("$.[0].bonus", is(100.0)))
+                .andExpect(jsonPath("$.[0].raises", is(0.0)))
+                .andExpect(jsonPath("$.[0].gross", is(20000.0)));
     }
 
     @Test
     @DatabaseSetup(value = "/dataset/salaryHistory/bonus/salaryWithMultiBonusImMonth.xml")
     public void salaryWithMultiBonusInMonth() throws Exception {
-        this.mockMvc.perform(get("/salaryHistory/10").contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)).andExpect(jsonPath("$[0].deduction", is(3500.0))).andExpect(jsonPath("$.[0].payRoll", is(16700.0))).andExpect(jsonPath("$.[0].leavesCost", is(0.0))).andExpect(jsonPath("$.[0].taxes", is(3000.0))).andExpect(jsonPath("$.[0].insurances", is(500.0))).andExpect(jsonPath("$.[0].bonus", is(200.0))).andExpect(jsonPath("$.[0].raises", is(0.0))).andExpect(jsonPath("$.[0].gross", is(20000.0)));
+        this.mockMvc.perform(get("/salaryHistory/10")
+                                     .contentType(MediaType.APPLICATION_JSON)
+                                     .accept(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$[0].deduction", is(3500.0)))
+                .andExpect(jsonPath("$.[0].payRoll", is(16700.0)))
+                .andExpect(jsonPath("$.[0].leavesCost", is(0.0)))
+                .andExpect(jsonPath("$.[0].taxes", is(3000.0)))
+                .andExpect(jsonPath("$.[0].insurances", is(500.0)))
+                .andExpect(jsonPath("$.[0].bonus", is(200.0)))
+                .andExpect(jsonPath("$.[0].raises", is(0.0)))
+                .andExpect(jsonPath("$.[0].gross", is(20000.0)));
     }
 
     @Test
@@ -119,13 +150,33 @@ class SalaryHistoryControllerTest {
     @Test
     @DatabaseSetup(value = "/dataset/salaryHistory/leaves/salaryWithLeavesInOneMonthYear10.xml")
     public void salaryWithLeavesInMonthWithExpertenceBiggerThan10Years() throws Exception {
-        this.mockMvc.perform(get("/salaryHistory/10").contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)).andExpect(jsonPath("$[0].deduction", is(3500.0))).andExpect(jsonPath("$.[0].payRoll", is(16500.0))).andExpect(jsonPath("$.[0].leavesCost", is(0.0))).andExpect(jsonPath("$.[0].taxes", is(3000.0))).andExpect(jsonPath("$.[0].insurances", is(500.0))).andExpect(jsonPath("$.[0].bonus", is(0.0))).andExpect(jsonPath("$.[0].raises", is(0.0))).andExpect(jsonPath("$.[0].gross", is(20000.0)));
+        this.mockMvc.perform(get("/salaryHistory/10")
+                                     .contentType(MediaType.APPLICATION_JSON)
+                                     .accept(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$[0].deduction", is(3500.0)))
+                .andExpect(jsonPath("$.[0].payRoll", is(16500.0)))
+                .andExpect(jsonPath("$.[0].leavesCost", is(0.0)))
+                .andExpect(jsonPath("$.[0].taxes", is(3000.0)))
+                .andExpect(jsonPath("$.[0].insurances", is(500.0)))
+                .andExpect(jsonPath("$.[0].bonus", is(0.0)))
+                .andExpect(jsonPath("$.[0].raises", is(0.0)))
+                .andExpect(jsonPath("$.[0].gross", is(20000.0)));
     }
 
     @Test
     @DatabaseSetup(value = "/dataset/salaryHistory/leaves/salaryWithLeavesInOneMonthYear2.xml")
     public void salaryWithLeavesInMonthWithExperienceLessThan10Years() throws Exception {
-        this.mockMvc.perform(get("/salaryHistory/10").contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)).andExpect(jsonPath("$[0].deduction", is(3500.0))).andExpect(jsonPath("$.[0].payRoll", is(16500.0))).andExpect(jsonPath("$.[0].leavesCost", is(0.0))).andExpect(jsonPath("$.[0].taxes", is(3000.0))).andExpect(jsonPath("$.[0].insurances", is(500.0))).andExpect(jsonPath("$.[0].bonus", is(0.0))).andExpect(jsonPath("$.[0].raises", is(0.0))).andExpect(jsonPath("$.[0].gross", is(20000.0)));
+        this.mockMvc.perform(get("/salaryHistory/10")
+                                     .contentType(MediaType.APPLICATION_JSON)
+                                     .accept(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$[0].deduction", is(3500.0)))
+                .andExpect(jsonPath("$.[0].payRoll", is(16500.0)))
+                .andExpect(jsonPath("$.[0].leavesCost", is(0.0)))
+                .andExpect(jsonPath("$.[0].taxes", is(3000.0)))
+                .andExpect(jsonPath("$.[0].insurances", is(500.0)))
+                .andExpect(jsonPath("$.[0].bonus", is(0.0)))
+                .andExpect(jsonPath("$.[0].raises", is(0.0)))
+                .andExpect(jsonPath("$.[0].gross", is(20000.0)));
     }
 
     @Test

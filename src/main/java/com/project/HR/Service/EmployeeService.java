@@ -87,9 +87,6 @@ public class EmployeeService {
         subEmployees.forEach(e -> e.setManager(manager.getManager()));
         employeeRepository.saveAll(subEmployees);
 
-//        var leaves = leaveRepository.getAllEmployeeLeaves(employee.getId());
-//        leaveRepository.deleteAll(leaves);
-
         employeeRepository.deleteById(id);
     }
     public List<EmployeeTeamDto> getEmployeesInTeam(int id) throws Exception {
