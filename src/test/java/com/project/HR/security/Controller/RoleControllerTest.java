@@ -52,39 +52,15 @@ class RoleControllerTest {
                                      .contentType(MediaType.APPLICATION_JSON)
                                      .accept(MediaType.APPLICATION_JSON)
                                      .content(objectMapper.writeValueAsString(record)))
-                                     .andExpect(jsonPath("$.name", Matchers.is("Hr")));
+                                     .andExpect(jsonPath("$.name", Matchers.is("Hr")))
+                                      .andExpect(status().isOk())
+                                       .andExpect(jsonPath("$.name",Matchers.notNullValue()));
+
 
     }
 
-    @Test
-    @DatabaseSetup(value = "/dataset/security/role/addRole.xml")
-    @ExpectedDatabase(value = "/dataset/security/role/expectedRole.xml" , assertionMode= DatabaseAssertionMode.NON_STRICT)
-    public  void addRole_Return200() throws Exception {
-        RoleCommand record = RoleCommand.builder()
-                .name("Hr")
-                .build();
-        this.mockMvc.perform(post("/Role/")
-                                     .contentType(MediaType.APPLICATION_JSON)
-                                     .accept(MediaType.APPLICATION_JSON)
-                                     .content(objectMapper.writeValueAsString(record)))
-                                     .andExpect(status().isOk());
 
-    }
 
-    @Test
-    @DatabaseSetup(value = "/dataset/security/role/addRole.xml")
-    @ExpectedDatabase(value = "/dataset/security/role/expectedRole.xml" , assertionMode= DatabaseAssertionMode.NON_STRICT)
-    public  void addRole_NameNotNull() throws Exception {
-        RoleCommand record = RoleCommand.builder()
-                .name("Hr")
-                .build();
-        this.mockMvc.perform(post("/Role/")
-                                     .contentType(MediaType.APPLICATION_JSON)
-                                     .accept(MediaType.APPLICATION_JSON)
-                                     .content(objectMapper.writeValueAsString(record)))
-                .andExpect(jsonPath("$.name",Matchers.notNullValue()));
-
-    }
 
 
     @Test
@@ -94,17 +70,10 @@ class RoleControllerTest {
                                      .contentType(MediaType.APPLICATION_JSON)
                                      .accept(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.[0]name", Matchers.is("Hr")))
-                .andExpect(jsonPath("$.[0]name", Matchers.is("Employee")));
+                .andExpect(jsonPath("$.[1]name", Matchers.is("Employee")))
+                .andExpect(status().isOk());
    }
 
-
-    @Test
-    @DatabaseSetup(value = "/dataset/security/role/getAllRole.xml")
-    public  void getAllRole_Return200() throws Exception {
-        this.mockMvc.perform(get("/Role/")
-                                     .contentType(MediaType.APPLICATION_JSON)
-                                     .accept(MediaType.APPLICATION_JSON))
-                                     .andExpect(status().isOk());
-    }
-
 }
+
+
