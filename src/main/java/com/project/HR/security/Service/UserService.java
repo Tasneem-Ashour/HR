@@ -15,11 +15,20 @@ public class UserService {
     UserConverter userConverter;
     @Autowired
     RoleRepository roleRepository;
-    public UserDto addUser(UserCommand userCommand) {
+    public UserDto addUser(UserCommand userCommand) throws Exception {
+        if(userCommand.getEmployee_id() == null)
+            throw new Exception("employee doesn't exist");
         User user = userConverter.convertCommandToEntity(userCommand);
         user.setRoles(userCommand.getRoles());
         userRepository.save(user);
         UserDto userDto = userConverter.convertEntityToDto(user);
         return userDto;
+    }
+    public UserDto getUser(int id) {
+        User user=    userRepository.findByEmployee_id( id);
+
+//    User user=    userRepository.findById( id).get();
+    UserDto userDto = userConverter.convertEntityToDto(user);
+    return userDto;
     }
 }

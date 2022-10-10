@@ -21,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 @SpringBootTest
@@ -58,6 +59,34 @@ class UserControllerTest {
                                              .accept(MediaType.APPLICATION_JSON)
                                              .content(objectMapper.writeValueAsString(userCommand)))
                                              .andExpect(status().isOk());
+
+
+    }
+    @Test
+    @DatabaseSetup(value = "/dataset/security/user/addUserWithEmployeeDoseNotExist.xml")
+    @ExpectedDatabase(value = "/dataset/security/user/expectedAddUserWithEmployeeDoseNotExist.xml" , assertionMode= DatabaseAssertionMode.NON_STRICT)
+    public void addUserWithEmployeeDoseNoTExist() throws Exception {
+        UserCommand userCommand = UserCommand.builder()
+                .email("user@orange.com")
+                .password("1234")
+                .roles(new ArrayList<>())
+                .employee_id(2)
+                .build();
+        Role role = Role.builder()
+                .id(1)
+                .build();
+        userCommand.getRoles().add(role);
+                     mockMvc.perform(post("/employee/user")
+                     .contentType(MediaType.APPLICATION_JSON)
+                     .accept(MediaType.APPLICATION_JSON)).andExpect(status().isBadRequest());
+    }
+    @Test
+    @DatabaseSetup(value = "/dataset/security/user/getUserById.xml")
+    public  void getUser() throws Exception {
+               this.mockMvc.perform(get("/employee/1/user")
+                                     .contentType(MediaType.APPLICATION_JSON)
+                                     .accept(MediaType.APPLICATION_JSON)                                    )
+                                     .andExpect(status().isOk());
 
 
     }

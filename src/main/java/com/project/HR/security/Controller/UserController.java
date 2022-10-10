@@ -13,9 +13,15 @@ public class UserController {
     @Autowired
     UserService userService;
 
-    @PostMapping(path ="/user" ,produces = MediaType.APPLICATION_JSON_VALUE)
-public ResponseEntity<UserDto> addUser(@RequestBody UserCommand userCommand){
+    @PostMapping(path = "/user", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<UserDto> addUser(@RequestBody UserCommand userCommand) throws Exception {
         var output = userService.addUser(userCommand);
         return ResponseEntity.ok(output);
+    }
+
+    @GetMapping(path = "/{id}/user", produces = MediaType.APPLICATION_JSON_VALUE)
+    public UserDto getUser(@PathVariable int id) {
+        var output = userService.getUser(id);
+        return output;
     }
 }
