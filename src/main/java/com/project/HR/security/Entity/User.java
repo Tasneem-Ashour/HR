@@ -17,6 +17,9 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+//    @UniqueEmail
+//    @NotBlank(message = "Email is mandatory")
+    @Column(unique=true)
     private String email;
     private String password;
     @ManyToMany(fetch = FetchType.EAGER)

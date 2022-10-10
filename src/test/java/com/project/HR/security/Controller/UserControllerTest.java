@@ -83,7 +83,7 @@ class UserControllerTest {
     @Test
     @DatabaseSetup(value = "/dataset/security/user/getUserById.xml")
     public  void getUser() throws Exception {
-               this.mockMvc.perform(get("/employee/1/user")
+               this.mockMvc.perform(get("/employee/user/1")
                                      .contentType(MediaType.APPLICATION_JSON)
                                      .accept(MediaType.APPLICATION_JSON)                                    )
                                      .andExpect(status().isOk());

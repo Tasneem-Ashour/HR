@@ -1,9 +1,9 @@
 package com.project.HR.security.Service;
+import com.project.HR.Repostory.EmployeeRepository;
 import com.project.HR.security.Command.UserCommand;
 import com.project.HR.security.Convertor.UserConverter;
 import com.project.HR.security.Dto.UserDto;
 import com.project.HR.security.Entity.User;
-import com.project.HR.security.Reopsitory.RoleRepository;
 import com.project.HR.security.Reopsitory.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,11 +13,13 @@ public class UserService {
     UserRepository userRepository;
     @Autowired
     UserConverter userConverter;
-    @Autowired
-    RoleRepository roleRepository;
+ @Autowired
+    EmployeeRepository employeeRepository;
     public UserDto addUser(UserCommand userCommand) throws Exception {
-        if(userCommand.getEmployee_id() == null)
+        if(employeeRepository.findById(userCommand.getEmployee_id()).isEmpty() ){
             throw new Exception("employee doesn't exist");
+
+        }
         User user = userConverter.convertCommandToEntity(userCommand);
         user.setRoles(userCommand.getRoles());
         userRepository.save(user);
@@ -25,9 +27,9 @@ public class UserService {
         return userDto;
     }
     public UserDto getUser(int id) {
-        User user=    userRepository.findByEmployee_id( id);
+//        User user=    userRepository.findByEmployee_id( id);
 
-//    User user=    userRepository.findById( id).get();
+    User user=    userRepository.findById( id).get();
     UserDto userDto = userConverter.convertEntityToDto(user);
     return userDto;
     }

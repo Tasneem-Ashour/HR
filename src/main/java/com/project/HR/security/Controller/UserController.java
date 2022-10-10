@@ -19,7 +19,7 @@ public class UserController {
         return ResponseEntity.ok(output);
     }
 
-    @GetMapping(path = "/{id}/user", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(path = "/user/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public UserDto getUser(@PathVariable int id) {
         var output = userService.getUser(id);
         return output;
