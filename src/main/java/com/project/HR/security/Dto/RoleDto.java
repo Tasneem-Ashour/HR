@@ -7,5 +7,5 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class RoleDto {
-    String name;
+    private  String name;
 }
