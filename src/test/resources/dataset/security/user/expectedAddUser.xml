@@ -5,5 +5,5 @@
     <team id="10" name='team1'/>
     <employee id="1" first_name='tasneem' last_name='essam' salary='20000' dob='1996-6-1' graduation='2019' gender='female' team_id='10' dept_id='10' national_id="123456789" experience="10" degree="senior" hiringDate="2020-01-01" />
     <role id="1" name="Hr"/>
-    <user_credential  email="user@orange.com" password="1234"  employee_id="1"/>
+    <user_credential  email="user@orange.com" password="$2a$10$xLfZmp.0rD2RpmA1z6G3CeEA3XqTrn.Fx1eckRQFD.qjs8Yjni6yW"  employee_id="1"/>
 </dataset>
