@@ -1,9 +1,12 @@
 package com.project.HR.security.Service;
 import com.project.HR.Repostory.EmployeeRepository;
 import com.project.HR.security.Command.UserCommand;
+import com.project.HR.security.Convertor.RoleConvertor;
 import com.project.HR.security.Convertor.UserConverter;
+import com.project.HR.security.Dto.RoleDto;
 import com.project.HR.security.Dto.UserDto;
 import com.project.HR.security.Entity.User;
+import com.project.HR.security.Reopsitory.RoleRepository;
 import com.project.HR.security.Reopsitory.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -15,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 @Service
 public class UserService implements UserDetailsService {
     @Autowired
@@ -23,6 +27,12 @@ public class UserService implements UserDetailsService {
     UserConverter userConverter;
     @Autowired
     EmployeeRepository employeeRepository;
+
+    @Autowired
+    RoleConvertor roleConvertor;
+
+    @Autowired
+    RoleRepository roleRepository;
 
     private final PasswordEncoder passwordEncoder;
     public UserService(PasswordEncoder passwordEncoder) {
@@ -45,11 +55,15 @@ public class UserService implements UserDetailsService {
         if (employeeRepository.findById(userCommand.getEmployee_id()).isEmpty()) {
             throw new Exception("employee doesn't exist");
         }
+        var roles = roleRepository.findAll();
         User user = userConverter.convertCommandToEntity(userCommand);
-        user.setRoles(userCommand.getRoles());
+        user.setRoles(roles);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
         UserDto userDto = userConverter.convertEntityToDto(user);
+        List<RoleDto> list = new ArrayList<>();
+        roles.forEach(e->list.add(roleConvertor.convertEntityToDto(e)));
+        userDto.setRoleDto(list);
         return userDto;
     }
     public UserDto getUser(int id) {

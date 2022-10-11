@@ -1,6 +1,9 @@
 package com.project.HR.security.Dto;
 import com.project.HR.DTO.EmployeeNameDto;
 import lombok.*;
+
+import java.util.ArrayList;
+import java.util.List;
 @Data
 @Builder
 @Setter
@@ -10,7 +13,7 @@ import lombok.*;
 public class UserDto {
     private String email;
     private String password;
-    private RoleDto roleDto;
+    private List<RoleDto> roleDto = new ArrayList<>();
     private EmployeeNameDto employeeNameDto;
 
 }
