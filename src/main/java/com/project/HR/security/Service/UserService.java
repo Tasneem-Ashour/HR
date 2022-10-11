@@ -34,6 +34,9 @@ public class UserService implements UserDetailsService {
     @Autowired
     RoleRepository roleRepository;
 
+    @Autowired
+    RoleService roleService;
+
     private final PasswordEncoder passwordEncoder;
     public UserService(PasswordEncoder passwordEncoder) {
         this.passwordEncoder = passwordEncoder;
@@ -55,15 +58,15 @@ public class UserService implements UserDetailsService {
         if (employeeRepository.findById(userCommand.getEmployee_id()).isEmpty()) {
             throw new Exception("employee doesn't exist");
         }
-        var roles = roleRepository.findAll();
+        var x = userCommand.getRoles();
         User user = userConverter.convertCommandToEntity(userCommand);
-        user.setRoles(roles);
+        user.setRoles(userCommand.getRoles());
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
         UserDto userDto = userConverter.convertEntityToDto(user);
         List<RoleDto> list = new ArrayList<>();
-        roles.forEach(e->list.add(roleConvertor.convertEntityToDto(e)));
-        userDto.setRoleDto(list);
+        x.forEach(e->list.add(roleConvertor.convertEntityToDto(e)));
+        userDto.setRoles(list);
         return userDto;
     }
     public UserDto getUser(int id) {

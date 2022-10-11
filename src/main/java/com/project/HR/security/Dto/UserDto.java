@@ -13,7 +13,7 @@ import java.util.List;
 public class UserDto {
     private String email;
     private String password;
-    private List<RoleDto> roleDto = new ArrayList<>();
+    private List<RoleDto> roles = new ArrayList<>();
     private EmployeeNameDto employeeNameDto;
 
 }
