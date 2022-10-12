@@ -8,8 +8,10 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -34,6 +36,8 @@ public  CustomAuthenticationFilter(AuthenticationManager authenticationManager){
         log.info("Email is:{}", email);
         log.info("Password is: {}" ,password);
         UsernamePasswordAuthenticationToken authenticationToken=new UsernamePasswordAuthenticationToken(email,password);
+       authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+        SecurityContextHolder.getContext().setAuthentication(authenticationToken);
         return  authenticationManager.authenticate(authenticationToken);
     }
     @Override
@@ -45,8 +49,9 @@ public  CustomAuthenticationFilter(AuthenticationManager authenticationManager){
                 .withExpiresAt(new Date(System.currentTimeMillis()+ 10*60*1000))
                 .withIssuer(request.getRequestURI())
                 .withClaim("roles",user.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()))
-                .sign(algorithm);
 
+                .sign(algorithm);
+        log.info("user authorities",user.getAuthorities());
         String refresh_token= JWT.create()
                 .withSubject(user.getUsername())
                 .withExpiresAt(new Date(System.currentTimeMillis()+ 30*60*1000))

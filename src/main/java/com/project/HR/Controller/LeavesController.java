@@ -12,7 +12,7 @@ import java.time.LocalDate;
 import java.util.List;
 @RestController
 @RestControllerAdvice
-@RequestMapping(path = "/Leave")
+@RequestMapping(path = "/leave")
 public class LeavesController {
     @Autowired
     LeaveService leaveService;

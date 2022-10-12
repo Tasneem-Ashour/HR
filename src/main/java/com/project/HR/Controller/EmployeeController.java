@@ -17,7 +17,7 @@ import java.util.List;
 
 @RestController
 @RestControllerAdvice
-@RequestMapping(path = "/Employee")
+@RequestMapping(path = "/employee")
 public class EmployeeController {
 
     @Autowired

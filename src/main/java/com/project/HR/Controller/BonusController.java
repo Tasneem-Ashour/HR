@@ -12,7 +12,7 @@ import java.time.LocalDate;
 import java.util.List;
 @RestController
 @RestControllerAdvice
-@RequestMapping(path = "/Bonus")
+@RequestMapping(path = "/bonus")
 public class BonusController {
     @Autowired
     BonusService bonusService;

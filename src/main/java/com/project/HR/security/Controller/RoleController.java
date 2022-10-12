@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 @RestController
 @RestControllerAdvice
-@RequestMapping(path = "/Role")
+@RequestMapping(path = "/role")
 public class RoleController {
 
     @Autowired

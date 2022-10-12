@@ -14,8 +14,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import static org.springframework.http.HttpMethod.GET;
-import static org.springframework.http.HttpMethod.POST;
+import static org.springframework.http.HttpMethod.*;
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
@@ -34,8 +33,33 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.authorizeRequests().antMatchers("/api/login/**").permitAll();
-        http.authorizeRequests().antMatchers(GET, "/employee/user/**").hasAuthority("Hr");
-        http.authorizeRequests().antMatchers(POST, "/employee/user").permitAll();
+
+        http.authorizeRequests().antMatchers(GET, "/employee/**").hasAuthority("Hr"); //GET EMPLOYEE
+        http.authorizeRequests().antMatchers(POST, "/employee/").hasAuthority("Hr"); //ADD EMPLOYEE
+        http.authorizeRequests().antMatchers(DELETE, "/employee/**").hasAuthority("Hr"); //DELETE EMPLOYEE
+        http.authorizeRequests().antMatchers(GET, "/employee/team/**").hasAuthority("Hr"); //GET EMPLOYEES IN TEAM
+        http.authorizeRequests().antMatchers(GET, "/employee/salary/**").hasAuthority("Hr,Employee"); //GET EMPLOYEE SALARY
+        http.authorizeRequests().antMatchers(PUT, "/employee/").hasAuthority("Hr,Employee"); //UPDATE EMPLOYEE
+        http.authorizeRequests().antMatchers(GET, "/employee/employeesUnderManager/**").hasAuthority("Hr"); //GET EMPLOYEES UNDER MANGER REC
+        http.authorizeRequests().antMatchers(GET, "/employee/manager/**").hasAuthority("Hr"); //GET EMPLOYEES UNDER MANGER
+
+        http.authorizeRequests().antMatchers(POST, "/leave").hasAuthority("Employee"); //ADD EMPLOYEE LEAVES
+        http.authorizeRequests().antMatchers(GET, "/leave/**").hasAuthority("Hr"); //GET EMPLOYEE LEAVES
+
+        http.authorizeRequests().antMatchers(POST, "/raises").hasAuthority("Hr"); //ADD EMPLOYEE Raises
+        http.authorizeRequests().antMatchers(GET, "/raises/**").hasAuthority("Hr"); //GET EMPLOYEE Raises
+
+        http.authorizeRequests().antMatchers(POST, "/bonus").hasAuthority("Hr"); //ADD EMPLOYEE BONUS
+        http.authorizeRequests().antMatchers(GET, "/bonus/**").hasAuthority("Hr"); //GET EMPLOYEE BONUS
+
+        http.authorizeRequests().antMatchers(GET, "/salaryHistory/**").hasAuthority("Employee"); //GET EMPLOYEE SALARY HISTORY
+
+        http.authorizeRequests().antMatchers(GET, "/employee/user/**").hasAuthority("Hr"); //GET USER
+        http.authorizeRequests().antMatchers(POST, "/employee/user").hasAuthority("Hr"); //ADD USER
+
+        http.authorizeRequests().antMatchers(GET, "/role/").hasAuthority("Hr"); //GET All ROLE
+        http.authorizeRequests().antMatchers(POST, "/role/").hasAuthority("Hr"); //ADD ROLE
+
         http.authorizeRequests().anyRequest().authenticated();
         http.addFilter(customAuthenticationFilter);
         http.addFilterBefore(new CustomAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
