@@ -2,6 +2,7 @@ package com.project.HR.Entity;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.Pattern;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
@@ -39,6 +40,7 @@ public class Employee {
     @OneToMany(mappedBy = "manager")
     private List<Employee> employees = new ArrayList<>();
     @Column(unique = true)
+    @Pattern(regexp = "^([1-9]{1})([0-9]{2})([0-9]{2})([0-9]{2})([0-9]{2})[0-9]{3}([0-9]{1})[0-9]{1}$",message = "national id not correct")
     private String nationalId;
     private Integer experience;
     private String degree;

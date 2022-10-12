@@ -53,6 +53,8 @@ dependencies {
     testImplementation 'org.springframework.security:spring-security-test'
     implementation group: 'com.auth0', name: 'java-jwt', version: '4.0.0'
 
+// https://mvnrepository.com/artifact/org.hibernate/hibernate-validator
+    implementation group: 'org.hibernate', name: 'hibernate-validator', version: '8.0.0.Final'
 
 
 

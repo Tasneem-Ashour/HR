@@ -45,13 +45,17 @@ public class EmployeeService {
         employee.setDepartment(department);
         Team team = teamRepository.findById(employeeCommand.getTeamId()).get();
         employee.setTeam(team);
-        Employee manger = getManager(employeeCommand.getManager());
-        employee.setManager(manger);
+        if(employeeCommand.getManager() != null){
+            Employee manger = getManager(employeeCommand.getManager());
+            employee.setManager(manger);
+        }
         employee.setExpertise(employeeCommand.getExpertise());
         employee.setHiringDate(employeeCommand.getHiringDate());
         employee = employeeRepository.save(employee);
         var employeeDto = employeeConverter.covertEntityToDTO(employee);
-        employeeDto.setManager(employeeConverter.covertEntityEmployeeToDTO(employee.getManager()));
+        if(employee.getManager() !=null){
+            employeeDto.setManager(employeeConverter.covertEntityEmployeeToDTO(employee.getManager()));
+        }
         employeeDto.setDepartment(departmentConverter.covertEntityToDTO(department));
         return employeeDto;
     }
