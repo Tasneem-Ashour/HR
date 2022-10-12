@@ -46,7 +46,7 @@ public  CustomAuthenticationFilter(AuthenticationManager authenticationManager){
         Algorithm algorithm=Algorithm.HMAC256("secret".getBytes());
         String access_taken= JWT.create()
                 .withSubject(user.getUsername())
-                .withExpiresAt(new Date(System.currentTimeMillis()+ 10*60*1000))
+                .withExpiresAt(new Date(System.currentTimeMillis()+ 30*60*1000))
                 .withIssuer(request.getRequestURI())
                 .withClaim("roles",user.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()))
 
@@ -58,8 +58,6 @@ public  CustomAuthenticationFilter(AuthenticationManager authenticationManager){
                 .withIssuer(request.getRequestURI().toString())
                 .sign(algorithm);
 
-//        response.setHeader("access_taken",access_taken);
-//        response.setHeader("refresh_token",refresh_token);
         Map<String,String> tokens  = new HashMap<>();
         tokens.put("access_taken",access_taken);
         tokens.put("refresh_token",refresh_token);

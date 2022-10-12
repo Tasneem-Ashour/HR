@@ -32,14 +32,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         customAuthenticationFilter.setFilterProcessesUrl("/employee/login");
         http.csrf().disable();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        http.authorizeRequests().antMatchers("/api/login/**").permitAll();
+        http.authorizeRequests().antMatchers("/employee/login/**").permitAll();
 
         http.authorizeRequests().antMatchers(GET, "/employee/**").hasAuthority("Hr"); //GET EMPLOYEE
         http.authorizeRequests().antMatchers(POST, "/employee/").hasAuthority("Hr"); //ADD EMPLOYEE
         http.authorizeRequests().antMatchers(DELETE, "/employee/**").hasAuthority("Hr"); //DELETE EMPLOYEE
         http.authorizeRequests().antMatchers(GET, "/employee/team/**").hasAuthority("Hr"); //GET EMPLOYEES IN TEAM
-        http.authorizeRequests().antMatchers(GET, "/employee/salary/**").hasAuthority("Hr,Employee"); //GET EMPLOYEE SALARY
-        http.authorizeRequests().antMatchers(PUT, "/employee/").hasAuthority("Hr,Employee"); //UPDATE EMPLOYEE
+        http.authorizeRequests().antMatchers(GET, "/employee/salary/**").hasAnyAuthority("Employee","Hr"); //GET EMPLOYEE SALARY
+        http.authorizeRequests().antMatchers(PUT, "/employee/").hasAuthority("Hr"); //UPDATE EMPLOYEE
         http.authorizeRequests().antMatchers(GET, "/employee/employeesUnderManager/**").hasAuthority("Hr"); //GET EMPLOYEES UNDER MANGER REC
         http.authorizeRequests().antMatchers(GET, "/employee/manager/**").hasAuthority("Hr"); //GET EMPLOYEES UNDER MANGER
 
@@ -52,7 +52,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests().antMatchers(POST, "/bonus").hasAuthority("Hr"); //ADD EMPLOYEE BONUS
         http.authorizeRequests().antMatchers(GET, "/bonus/**").hasAuthority("Hr"); //GET EMPLOYEE BONUS
 
-        http.authorizeRequests().antMatchers(GET, "/salaryHistory/**").hasAuthority("Employee"); //GET EMPLOYEE SALARY HISTORY
+        http.authorizeRequests().antMatchers(GET, "/salaryHistory/**").hasAnyAuthority("Employee","Hr"); //GET EMPLOYEE SALARY HISTORY
 
         http.authorizeRequests().antMatchers(GET, "/employee/user/**").hasAuthority("Hr"); //GET USER
         http.authorizeRequests().antMatchers(POST, "/employee/user").hasAuthority("Hr"); //ADD USER

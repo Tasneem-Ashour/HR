@@ -24,7 +24,6 @@ public class EmployeeEditCommand {
     private List<Expertise> expertise;
     private Integer teamId;
     private Integer manager;
-    private String nationalId;
     private Integer experience;
     private String degree ;
 
